@@ -1,0 +1,1 @@
+export default () => <div>Jobby en construcción!</div>

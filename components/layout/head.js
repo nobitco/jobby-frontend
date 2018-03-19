@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React from 'react'
-import Package from '../package'
-import inlineCSS from '../css/main.scss'
+import Package from '../../package'
+import inlineCSS from '../../css/main.scss'
 
 export default class extends React.Component {
   static propTypes () {

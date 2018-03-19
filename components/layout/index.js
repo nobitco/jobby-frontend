@@ -1,5 +1,7 @@
 import React from 'react'
-// import AppBarMain from './appbarmain'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import customTheme from '../../theme/custom-theme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Head from './head'
 
 export default class extends React.Component {
@@ -12,12 +14,12 @@ export default class extends React.Component {
 
   render () {
     return (
-      <div>
-        <Head title={this.props.title} />
-        <div>
+      <MuiThemeProvider muiTheme={customTheme(this.props.userAgent)}>
+       <div>
+        <Head title={this.props.title} />      
           {this.props.children}
         </div>
-      </div>
+      </MuiThemeProvider>
     )
   }
 }

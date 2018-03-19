@@ -1,5 +1,6 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import {yellow900, limeA200} from 'material-ui/styles/colors'
+
 export default (userAgent) => {
   return getMuiTheme({
     userAgent: userAgent,

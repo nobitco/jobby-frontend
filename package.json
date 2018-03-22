@@ -27,6 +27,7 @@
     "raw-loader": "^0.5.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-tap-event-plugin": "^3.0.2",
     "sass-loader": "^6.0.7"
   }
 }

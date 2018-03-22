@@ -4,7 +4,11 @@ import customTheme from '../../theme/custom-theme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Head from './head'
 
-export default class extends React.Component {
+export default class Layout extends React.Component {
+  
+  constructor(props){
+    super(props);
+  }
   static propTypes () {
     return {
       session: React.PropTypes.object.isRequired,
@@ -16,10 +20,12 @@ export default class extends React.Component {
     return (
       <MuiThemeProvider muiTheme={customTheme(this.props.userAgent)}>
        <div>
-        <Head title={this.props.title} />      
-          {this.props.children}
+          <Head title={this.props.title} />    
+            {this.props.children} 
         </div>
       </MuiThemeProvider>
     )
   }
 }
+
+

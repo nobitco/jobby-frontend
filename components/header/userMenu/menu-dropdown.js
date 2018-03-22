@@ -1,22 +1,46 @@
 import React from 'react'
-import IconMenu from 'material-ui/IconMenu';
-import IconBtn from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu'
+import IconBtn from 'material-ui/IconButton'
+import Popover from 'material-ui/Popover'
 
+export default class MenuDropdown extends React.Component{
+  
+  constructor(props){
+    super(props)
+    this.state = {
+      open: false,
+    }
+  }
+  
+  handleClick = (event) => {
+    event.preventDefault();
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget
+    })
+  }
 
-export default function MenuDropdown(props){
-
-     return(        
-            <div>
-              <IconMenu
-                anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                iconButtonElement={<IconBtn>{props.icon}</IconBtn>}
-              >
-                {props.content}
-              </IconMenu>
-            </div>
-     
-    )
+  handleRequestClose = () => {
+    this.setState({
+      open: false
+    });
+  }
+  
+  render(){
+     return(<div>
+             <IconBtn  onClick={this.handleClick}
+                       tooltip={this.props.tooltip}>
+             {this.props.icon}
+             </IconBtn>
+             <Popover open={this.state.open}
+                      anchorEl={this.state.anchorEl}
+                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                      onRequestClose={this.handleRequestClose}
+                      style={{marginTop: 20}}>
+              {this.props.content}
+            </Popover>
+           </div>
+    )}
 
 }
-

@@ -12,13 +12,27 @@ import Subheader from 'material-ui/Subheader';
 import BookmarkIcon from 'material-ui/svg-icons/action/bookmark';
 import Divider from 'material-ui/Divider';
 import MenuDropdown from './menu-dropdown'
+import muiThemeable from 'material-ui/styles/muiThemeable';
+import Badge from 'material-ui/Badge';
 
-export default class UserMenuBar extends React.Component{
+class UserMenuBar extends React.Component{
   
   constructor(props){
     super(props)
     this.state={
       open: false,
+    }
+  }
+  
+  getNotificationIcon = (arrayLength) => {
+    if(arrayLength > 0){
+      return  (<Badge badgeContent={arrayLength}
+                      secondary={true}
+                      badgeStyle={{top: 12, right: 12}} >
+                  <NotificationIcon color={this.props.muiTheme.palette.primary1Color} /> 
+               </Badge>)
+    }else{
+      return (<NotificationIcon color={this.props.muiTheme.palette.disabledColor} />)
     }
   }
 
@@ -50,7 +64,8 @@ export default class UserMenuBar extends React.Component{
                             </List>) 
     const userMenuContent = (<div>
                               <UserDetail name={'Pepita Perez'} 
-                                           role='Coordinadora' avatar='https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg' />
+                                           role='Coordinadora' avatar='https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg' 
+                                           color={this.props.muiTheme.palette.primary1Color}/>
                               <Divider />
                               <Menu>
                                 <MenuItem primaryText="Configuración"
@@ -62,12 +77,13 @@ export default class UserMenuBar extends React.Component{
            
      return(  
         <div className='menu'>
-          <MenuDropdown icon={<NotificationIcon />} 
-                        content={notificationList} />                 
+          <MenuDropdown icon={this.getNotificationIcon(notifications.length)} 
+                        content={notificationList} 
+                        tooltip={'Notificaciones'}/>                 
           <MenuDropdown icon={<Avatar src='https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg'
-                        size={32}
-                        style={{marginTop:20}}/> }
-                        content={userMenuContent} />                     
+                                      size={32} /> }
+                        content={userMenuContent} 
+                        tooltip={'Usuario'}/>                     
             <style jsx>{`
               .menu{
                 width:140px;
@@ -90,9 +106,14 @@ export default class UserMenuBar extends React.Component{
   
 }
 
+export default muiThemeable()(UserMenuBar);
+
 const UserDetail = function(props){
+  
+  const color = props.color;
+  
   return(
-    <div className='user-details'>
+    <div className='user-details' style={{ backgroundColor: color}}>
 
         <Avatar src={props.avatar}
                 size={52}
@@ -117,6 +138,7 @@ const UserDetail = function(props){
 
               .text-info{
               width:70%;
+color:white;
               }
               .text-info div{
               margin-left:12px;
@@ -127,3 +149,4 @@ const UserDetail = function(props){
     </div>
   )
 }
+

@@ -1,8 +1,11 @@
 @import './reset';
 @import '../node_modules/materialize-css/sass/materialize.scss';
 
+
+$catskillwhite: #F1F5F9; 
+ 
 html, body{
-  background-color: #fff; 
+  background-color: $catskillwhite; 
   height:100%;
   overflow:hidden;
   padding: 0;
@@ -10,11 +13,14 @@ html, body{
 }
 
 nav{
-  background-color: white;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 nav ul a{
     color: black !important;
 
 }
+
+
 

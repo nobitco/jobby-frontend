@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from '../components/layout/index' 
+import Layout from '../components/layout/layout' 
 import LogBtn from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import Link from 'next/link'

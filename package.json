@@ -21,6 +21,7 @@
   "homepage": "https://github.com/nobitco/jobby-frontend#readme",
   "dependencies": {
     "material-ui": "^0.20.0",
+    "materialize-css": "^0.100.2",
     "next": "^5.0.0",
     "node-sass": "^4.7.2",
     "raw-loader": "^0.5.1",

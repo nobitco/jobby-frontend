@@ -1,6 +1,20 @@
+@import './reset';
+@import '../node_modules/materialize-css/sass/materialize.scss';
 
 html, body{
   background-color: #fff; 
   height:100%;
   overflow:hidden;
+  padding: 0;
+  margin:0;
 }
+
+nav{
+  background-color: white;
+}
+
+nav ul a{
+    color: black !important;
+
+}
+

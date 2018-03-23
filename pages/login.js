@@ -4,15 +4,18 @@ import LogBtn from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import Link from 'next/link'
 
+
 class Login extends React.Component{
   
   constructor(props){
     super(props);
+    this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; //gets navigator.UserAgent at the very very begining!
   }
+  
   
   render(){
     return(
-      <Layout title='Login : Bienvenido a Jobby'>
+      <Layout title='Login : Bienvenido a Jobby' userAgent={this.userAgent}>
          <div id='login-box'>
             <h1>Jobby</h1>
             <form>

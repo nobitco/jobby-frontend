@@ -9,11 +9,12 @@ export default class Dashboard extends Page{
   
   constructor(props){
     super(props)
+    this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; //gets navigator.UserAgent at the very very begining!
   }
   
   render(){
     return(
-      <Layout title='Dashboard'>
+      <Layout title='Dashboard' userAgent={this.userAgent}>
          <Header />
          <BlockWrapper>
            <SideBar/>

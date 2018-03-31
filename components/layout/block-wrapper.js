@@ -5,8 +5,8 @@ import React from 'react'
 export default function BlockWrapper(props){
   
   return(
-    <div className='row block'>
-      {props.children}
+    <div className='row block'> 
+      {props.children}         
       <style jsx>{`
         .block{
           padding:23px 1.14rem;

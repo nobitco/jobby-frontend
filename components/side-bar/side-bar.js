@@ -6,10 +6,10 @@ import Divider from 'material-ui/Divider'
 export default function SideBar(){
 
     return(
-     <section id='side-bar' className='col'>
+     <section id='side-bar' className='col s12 m4 l3'>
        <SideBarHeader />
-       <Divider className='col s12'/>
-       <List className='col s12'>
+       <Divider />
+       <List >
         <ListItem secondaryText="Información de entregas"  leftIcon={null} />
         <ListItem secondaryText="Mis Practicantes" leftIcon={null} />
         <ListItem secondaryText="Mis Tutores" leftIcon={null} />
@@ -17,9 +17,10 @@ export default function SideBar(){
       </List>
        <style jsx>{`
             #side-bar{
-            width:300px;
             border:1px solid #eaeaea;
 background-color: #fff;
+max-width:280px;
+
             }
         `}</style>
      </section>

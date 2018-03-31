@@ -6,7 +6,7 @@ import SettingsIcon from 'material-ui/svg-icons/action/settings';
 export default function SideBarHeader(){
 
     return(
-     <div id='side-bar-header' className='col s12'>
+     <div id='side-bar-header'>
       <Avatar src='https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg'
               size={60}
               style={{marginTop:15}} />

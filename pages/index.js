@@ -9,13 +9,13 @@ class LandingPage extends Page{
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; //gets navigator.UserAgent at the very very begining!
   }
     
-  }
   
-  render () {
+  
+  render(){
     return (
         <Layout title='LandingPage' userAgent={this.userAgent} >
          <div style={{ display:'flex', justifyContent: 'center', alignItems: 'center', padding: '140px 20px' }}>
-            {<h1 style={{color: '#dbdbdb'}}>Jobby</h1>}
+            {<h1 style={{color: '#dbdbdb'}}>Jobby Landing Page!</h1>}
          </div> 
         </Layout>
     )

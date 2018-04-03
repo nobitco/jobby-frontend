@@ -23,12 +23,12 @@ export default class InfoCard extends React.Component{
   }
   
   render(){
-    // here it must receive an array of delayed terms and its respective names
+    // here it must receive an object with X number of arrays that contains delayed terms and its respective names
     //display it in aList
     
     const items = this.props.items;
     const settingsBtnStyle = {
-      position:'top',
+      position:'absolute',
       top: 0,
       right: 0
     }

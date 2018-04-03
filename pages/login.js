@@ -14,8 +14,11 @@ class Login extends React.Component{
   
   
   render(){
+    
+    const wrapperStyle= { display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height:'100vh'}
     return(
-      <Layout title='Login : Bienvenido a Jobby' userAgent={this.userAgent}>
+      <Layout title='Login : Bienvenido a Jobby' userAgent={this.userAgent} >
+        <div id='wrapper' style={wrapperStyle}>
          <div id='login-box'>
             <h1>Jobby</h1>
             <form>
@@ -41,10 +44,10 @@ class Login extends React.Component{
               </Link>
             </form>
             <style jsx>{`
+            
               #login-box{
                 max-width: 450px;
-                margin: 0 auto;
-                margin-top: 10%;
+                margin-top: -300px;
               }
               h1{
                 text-align:center;
@@ -56,6 +59,7 @@ class Login extends React.Component{
               }
             `}</style>
           </div>
+        </div>
       </Layout>
     )
   }

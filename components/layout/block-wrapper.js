@@ -1,6 +1,6 @@
 import React from 'react'
 
-//wraps its children in a responsive 12 grid row by materialize!
+//wraps its children in a responsive 12 grid row. By materialize!
 
 export default function BlockWrapper(props){
   
@@ -10,7 +10,7 @@ export default function BlockWrapper(props){
       <style jsx>{`
         .block{
           padding:23px 1.14rem;
-            border:1px solid #eaeaea;
+          border:1px solid #eaeaea;
 
         }
       `}</style>

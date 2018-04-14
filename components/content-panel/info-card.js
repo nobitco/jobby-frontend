@@ -22,6 +22,70 @@ export default class InfoCard extends React.Component{
     })
   }
   
+  /* get the tab labels according to a key object parameter*/
+  getTabsLabels = (items, key) => {
+    
+    const labels = []
+    items.forEach((item, index) => {    
+      labels.indexOf(item[key]) == -1 && labels.push(item[key])  
+    } )
+    
+    return labels;
+
+  }
+  
+  createCardTabs = () => {
+    
+  const tabsLabels = this.getTabsLabels(this.props.items, this.props.keyFilter)
+  return tabsLabels.map((item, index) => <Tab label={item} value={index} key={index} /> )
+  
+  }
+  //Creates 
+  categorizeItems = () => { 
+    
+  const tabsLabels = this.getTabsLabels(this.props.items, this.props.keyFilter)
+  const keyFilter = this.props.keyFilter
+  const lists = new Array()  // must have arrays within it, created dinamically. Number of arrays must be equal to number of tabLabels
+  //const filledList = []
+  tabsLabels.map((label, index) => {
+    lists[index] = []   // creates an empty array within 'lists' array, push it a temporal array filled with common category objects
+    const array = []  //temporal array
+    for (var i = 0; i < this.props.items.length ; i++) {
+      this.props.items[i][keyFilter].indexOf(label) >= 0 && array.push(this.props.items[i])
+    }
+  
+    lists[index].push(array)
+
+  })
+  
+  return lists
+  
+  /*filledList = lists.map((array, index) => {
+        for (var i = 0; i < array.length ; i++) {
+            <ListItem leftAvatar={<Avatar src={array[i].avatar} />}
+                      primaryText={array[i].username}
+                      secondaryText={array[i].activity}
+                      rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}}/>}
+                      key={i} />
+        }
+  })*/
+  
+  //return filledList.map((array, index) => <List key={index}> {array} </List>)
+  } // function ends
+  
+  createCardList = (array) => { (
+    <List>{
+    array.map((item, i) => 
+    ( <ListItem leftAvatar={<Avatar src={item.avatar} />}
+                      primaryText={item.username}
+                      secondaryText={item.activity}
+                      rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}}/>}
+                      key={i} />
+    ))
+    
+    }</List>)
+  }
+  
   render(){
     // here it must receive an object with X number of arrays that contains delayed terms and its respective names
     //display it in aList
@@ -32,7 +96,8 @@ export default class InfoCard extends React.Component{
       top: 0,
       right: 0
     }
-  
+    const lists = this.categorizeItems() 
+    
     return(
       <article>
         <div className='card-header'>
@@ -44,25 +109,18 @@ export default class InfoCard extends React.Component{
         </div>
         <Card>
           <Tabs onChange={this.handleChange}
-                 value={this.state.slideIndex}>
-            <Tab label='Tutores' value={0} />
-            <Tab label='Practicantes' value={1} />
+                value={this.state.slideIndex}>
+           {  this.createCardTabs() }
           </Tabs>
           <SwipeableViews index={this.state.slideIndex}
                            onChangeIndex={this.handleChange}>
-
+            {   
+              lists.map((list, index) => {
+                   this.createCardList(list);
+              })
+            }
             <List>
-              {
-                items.map( (item, index) => (  
-                <ListItem
-                  leftAvatar={<Avatar src={'https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg'}/>}
-                  primaryText='Nombre del estudiante'
-                  secondaryText='Nombre de la actividad'
-                  rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}}/>}
-                  key={index}
-                />
-              ))
-              }
+     
             </List> 
             <h5>List 2</h5> 
           </SwipeableViews>

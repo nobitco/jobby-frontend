@@ -6,6 +6,7 @@ import {List, ListItem} from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import RaisedButton from 'material-ui/RaisedButton'
 import SettingsIcon from 'material-ui/svg-icons/action/settings'
+import createReactClass from 'create-react-class'
 
 export default class InfoCard extends React.Component{
   
@@ -60,31 +61,36 @@ export default class InfoCard extends React.Component{
   
   return lists
   
-  /*filledList = lists.map((array, index) => {
-        for (var i = 0; i < array.length ; i++) {
-            <ListItem leftAvatar={<Avatar src={array[i].avatar} />}
-                      primaryText={array[i].username}
-                      secondaryText={array[i].activity}
-                      rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}}/>}
-                      key={i} />
-        }
-  })*/
-  
-  //return filledList.map((array, index) => <List key={index}> {array} </List>)
   } // function ends
   
-  createCardList = (array) => { (
-    <List>{
-    array.map((item, i) => 
-    ( <ListItem leftAvatar={<Avatar src={item.avatar} />}
-                      primaryText={item.username}
-                      secondaryText={item.activity}
-                      rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}}/>}
-                      key={i} />
-    ))
+  createCardList = () => { 
+   
+   var SwipeableListItems = createReactClass({
+ 
+     render: function(){
+        for (var i = 0; i < this.props.listItems.length ; i++) {
+          return this.props.listItems[i];
+        }
+     }
+   });
+   
+   var SwipeableList = createReactClass({
+        
+         render: function(){
+                     var lists = this.props.listArray;
+                     var listItems = lists.map((listItemObj, index) =>  (<ListItem leftAvatar={<Avatar src={listItemObj.avatar} />}
+                                                                                  primaryText={listItemObj.username}
+                                                                                  secondaryText={listItemObj.activity}
+                                                                                  rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}}/>}
+                                                                                  key={index} /> ));
+                    // HERE IT IS THE BUG!!! .map() is not a function
+                     return (<List><SwipeableListItems listItems={listItems} /></List>)             
+         }
+   });
     
-    }</List>)
-  }
+   return (<SwipeableList listArray={this.categorizeItems} />)
+   
+  } // method ends
   
   render(){
     // here it must receive an object with X number of arrays that contains delayed terms and its respective names
@@ -96,8 +102,22 @@ export default class InfoCard extends React.Component{
       top: 0,
       right: 0
     }
-    const lists = this.categorizeItems() 
+    const categorizedLists = this.categorizeItems() 
+
+    var Opa = createReactClass({
+     getInitialState: function(){
+       return { 
+         categorizedLists: this.props.categorizedLists, 
+         createCardList : this.props.createCardList
+        }
+     },
+     render: function(){
+        console.log(this.props.createCardList)
+        return this.props.createCardList()  //here must retun excecution of IfoCard's createCardList() method  
+     }
+    });
     
+
     return(
       <article>
         <div className='card-header'>
@@ -114,15 +134,9 @@ export default class InfoCard extends React.Component{
           </Tabs>
           <SwipeableViews index={this.state.slideIndex}
                            onChangeIndex={this.handleChange}>
-            {   
-              lists.map((list, index) => {
-                   this.createCardList(list);
-              })
-            }
-            <List>
-     
-            </List> 
-            <h5>List 2</h5> 
+            
+              <Opa categorizedLists={categorizedLists} createCardList={this.createCardList}/>
+      
           </SwipeableViews>
         </Card>
          <style jsx>{`

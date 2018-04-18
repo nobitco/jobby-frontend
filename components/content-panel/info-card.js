@@ -53,62 +53,35 @@ export default class InfoCard extends React.Component{
     return lists
   }
   
-  getListItemsAll = (lists) => {
+  // itera el vector 0 para crear los <ListItem />  y entregarlo 
+  getListItems = (tabs) => {
     let listItems = []
-    let i
-    lists.forEach(function (e) {
-      // console.log(e)
-      e.forEach(function(f) {
-        console.log('x')
-        f.forEach(function (g) {
-          listItems.push(<ListItem leftAvatar={<Avatar src={g.avatar} />}
-            primaryText={g.username}
-            secondaryText={g.activity}
-            rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}}/>}
-            key={i} />)
-            i++
-        })
+
+    tabs.forEach(function (list) {
+      list.forEach(function (item) {
+        listItems.push(<ListItem leftAvatar={<Avatar src={item.avatar} />}
+          primaryText= {item.username}
+          secondaryText= {item.activity}
+          rightIconButton= {<RaisedButton label='Notificar' secondary= {true} style={{margin: 10}}/>}
+          key={ item.id } />)
       })
     })
-    return listItems
-  }
-  getListItems = (lists) => {
-    let listItems = []
-    let i
-    lists.forEach(function (e) {
-      // console.log(e)
-      e.forEach(function(f) {
-        console.log('x')
-        f.forEach(function (g) {
-          listItems.push(<ListItem leftAvatar={<Avatar src={g.avatar} />}
-            primaryText={g.username}
-            secondaryText={g.activity}
-            rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}}/>}
-            key={i} />)
-            i++
-        })
-      })
-    })
+
     return listItems
   }
 
-
-
+  // iterate array and generate <List \>
   getListsTab = (lists) => {
-
     return (
-      lists.map((label, index) => 
-        <List>
-          <ListItem leftAvatar={<Avatar src='https://s3.amazonaws.com/uifaces/faces/twitter/gmourier/128.jpg' />}
-                primaryText="Trisha.Medhurst96"
-                secondaryText='Activity transition'
-                rightIconButton={<RaisedButton label='Notificar' secondary={true} style={{margin: 10}} />}
-                key= {index} />
+      lists.map((tabs, index) =>
+        <List key= { index }>
+          { this.getListItems(tabs) }
         </List>
       )
     )
   }
 
+  // only iterate lists structure to debug
   makeIteratorLists = (lists) => {
     lists.forEach(function (e) {
       // console.log(e)
@@ -121,10 +94,11 @@ export default class InfoCard extends React.Component{
     })
     return 0
   }
+
   render(){
     // here it must receive an object with X number of arrays that contains delayed terms and its respective names
     //display it in aList
-    const items = this.props.items;
+    const items = this.props.items
     const settingsBtnStyle = {
       position:'absolute',
       top: 0,
@@ -132,15 +106,15 @@ export default class InfoCard extends React.Component{
     }
     const lists = this.categorizeItems()
     const listsTab = this.getListsTab(lists)
-    console.log(lists)
+
     return(
       <article>
         <div className='card-header'>
            <h5 className='card-title '>{this.props.title}</h5>
            <RaisedButton className='settings-btn'
-                         label='Configurar'
-                         icon={ <SettingsIcon />}
-                         style={settingsBtnStyle} />
+              label='Configurar'
+              icon={ <SettingsIcon />}
+              style={settingsBtnStyle} />
         </div>
         <Card>
           <Tabs onChange={this.handleChange}
@@ -148,7 +122,7 @@ export default class InfoCard extends React.Component{
            {  this.createCardTabs() }
           </Tabs>
           <SwipeableViews index={this.state.slideIndex}
-                           onChangeIndex={this.handleChange}>
+              onChangeIndex={this.handleChange}>
             { listsTab }
           </SwipeableViews>
         </Card>

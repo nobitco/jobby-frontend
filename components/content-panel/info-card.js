@@ -53,27 +53,20 @@ export default class InfoCard extends React.Component{
   } 
    
    createListItemComponents = (array) => {
-     let listItemsComponents = new Array();
-     for (var i = 0; i < array.length ; i++) {  // iterares n tabs times 
-       listItemsComponents =  array[i].map((item, index) => <ListItem leftAvatar={<Avatar src={item.avatar} />}
+    return array.map((objs, i) => {
+      return objs.map( (item, index) => <ListItem leftAvatar={<Avatar src={item.avatar} />}
                                                                       primaryText={item.username}
                                                                       secondaryText={item.activity}
                                                                       rightIconButton={<RaisedButton label='Notificar' 
-                                                                      secondary={true} style={{margin: 10}}/>}
-                                                                      key={index} /> )  //iterates nListItem times
-
-     }
-                                        
-    return listItemsComponents;
+                                                                      secondary={true} style={{margin: 10,}} />}
+                                                                      key={index} /> )  //iterates nListItem times 
+    })                                  
   }
     
-   createListComponents = (array) => {
-     const listsComponents = new Array();
-     for (var i = 0; i < array.length ; i++) {
-        listsComponents.push(<List key={i}>{ this.createListItemComponents(array[i]) }</List>)
-     }
-     return listsComponents
-  }
+  createListComponents = (arrays) => arrays.map( (array, index) => <List key={index}>{ this.createListItemComponents(array) }</List> )
+    
+   
+  
     
   render(){
     // here it must receive an object with X number of arrays that contains delayed terms and its respective names

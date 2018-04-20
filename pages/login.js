@@ -1,11 +1,13 @@
 import React from 'react'
+import Page from '../components/page'
 import Layout from '../components/layout/layout' 
 import LogBtn from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import Link from 'next/link'
 
 
-class Login extends React.Component{
+
+class Login extends Page {
   
   constructor(props){
     super(props);
@@ -14,54 +16,63 @@ class Login extends React.Component{
   
   
   render(){
-    
     const wrapperStyle= { display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height:'100vh'}
-    return(
-      <Layout title='Login : Bienvenido a Jobby' userAgent={this.userAgent} >
-        <div id='wrapper' style={wrapperStyle}>
-         <div id='login-box'>
-            <h1>Jobby</h1>
-            <form>
-             <div className='input'>
-               <TextField floatingLabelText='E-mail'
-                          name='email'
-                          type='text'
-                          />
-             </div>
-             <div className='input'>
-              <TextField floatingLabelText='Contraseña'
-                          name='password'
-                          type='password'
-                          />
-             </div>
-             <Link href='/dashboard-coord'>
-               <LogBtn label="Entrar" 
-                       primary={true} 
-                       type='submit' 
-                       fullWidth={true} 
-                       style={{marginTop: 50}}
-                       />
-              </Link>
-            </form>
-            <style jsx>{`
-            
-              #login-box{
-                max-width: 450px;
-                margin-top: -300px;
-              }
-              h1{
-                text-align:center;
-                font-size: 50px;    
-              }
-              form{
-                width:60%;
-                margin: 40px auto;
-              }
-            `}</style>
+    if (!this.props.session.user) {
+      return(
+        <Layout title='Login : Bienvenido a Jobby' userAgent={this.userAgent} >
+          <div id='wrapper' style={wrapperStyle}>
+          <div id='login-box'>
+              <h1>Jobby</h1>
+              <form>
+              <div className='input'>
+                <TextField floatingLabelText='E-mail'
+                            name='email'
+                            type='text'
+                            />
+              </div>
+              <div className='input'>
+                <TextField floatingLabelText='Contraseña'
+                            name='password'
+                            type='password'
+                            />
+              </div>
+              <Link href='/dashboard-coord'>
+                <LogBtn label="Entrar" 
+                        primary={true} 
+                        type='submit' 
+                        fullWidth={true} 
+                        style={{marginTop: 50}}
+                        />
+                </Link>
+              </form>
+              <style jsx>{`
+              
+                #login-box{
+                  max-width: 450px;
+                  margin-top: -300px;
+                }
+                h1{
+                  text-align:center;
+                  font-size: 50px;    
+                }
+                form{
+                  width:60%;
+                  margin: 40px auto;
+                }
+              `}</style>
+            </div>
           </div>
-        </div>
-      </Layout>
-    )
+        </Layout>
+      )
+    } else {
+      return (
+        <Layout>
+          <Link prefetch href="/dashboard">
+            <a>Usted ya está logueado!</a>
+          </Link>
+        </Layout>
+      )
+    }
   }
 }
 

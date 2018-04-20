@@ -11,10 +11,48 @@ class Login extends Page {
   
   constructor(props){
     super(props);
+    this.state = {
+      email: '',
+      password: '',
+      session: this.props.session
+    }
+
+    this.handleEmailChange = this.handleEmailChange.bind(this)
+    this.handlePasswordChange = this.handlePasswordChange.bind(this)
+    this.handleSignInSubmit = this.handleSignInSubmit.bind(this)
+
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; //gets navigator.UserAgent at the very very begining!
   }
   
+  handleEmailChange(event) {
+    this.setState({
+      email: event.target.value
+    })
+  }
+
+  handlePasswordChange(event) {
+    this.setState({
+      password: event.target.value
+    })
+  }
+
+  handleSignInSubmit(event) {
+    event.preventDefault()
+
+    // An object passed NextAuth.signin will be passed to your signin() function
+    NextAuth.signin({
+      email: this.state.email,
+      password: this.state.password
+    })
+    .then(authenticated => {
+      Router.push(`/auth/callback`)
+    })
+    .catch(() => {
+      alert("Authentication failed!.")
+    })
+  }
   
+
   render(){
     const wrapperStyle= { display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height:'100vh'}
     if (!this.props.session.user) {
@@ -23,27 +61,32 @@ class Login extends Page {
           <div id='wrapper' style={wrapperStyle}>
           <div id='login-box'>
               <h1>Jobby</h1>
-              <form>
-              <div className='input'>
-                <TextField floatingLabelText='E-mail'
-                            name='email'
-                            type='text'
-                            />
-              </div>
-              <div className='input'>
-                <TextField floatingLabelText='Contraseña'
-                            name='password'
-                            type='password'
-                            />
-              </div>
-              <Link href='/dashboard-coord'>
-                <LogBtn label="Entrar" 
-                        primary={true} 
-                        type='submit' 
-                        fullWidth={true} 
-                        style={{marginTop: 50}}
-                        />
-                </Link>
+              <form id="sigin" method="post" action="/auth/signin" onSubmit={this.handleSignInSubmit}>
+              <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
+                <div className='input'>
+                  <TextField floatingLabelText='E-mail'
+                              name='email'
+                              type='text'
+                              value={this.state.email}
+                              onChange={this.handleEmailChange}
+                              />
+                </div>
+                <div className='input'>
+                  <TextField floatingLabelText='Contraseña'
+                              name='password'
+                              type='password'
+                              value={this.state.password}
+                              onChange={this.handlePasswordChange}
+                              />
+                </div>
+                <Link href='/dashboard-coord'>
+                  <LogBtn label="Entrar" 
+                          primary={true} 
+                          type='submit' 
+                          fullWidth={true} 
+                          style={{marginTop: 50}}
+                          />
+                  </Link>
               </form>
               <style jsx>{`
               

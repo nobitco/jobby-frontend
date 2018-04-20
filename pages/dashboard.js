@@ -13,8 +13,8 @@ export default class Dashboard extends Page{
   static async getInitialProps ({req, query}) {
     let props = await super.getInitialProps({req, query})
 
-    const nextAssignments = await fetch('http://localhost:3001/api/next-assignments')
-    const deadAssignments =  await fetch('http://localhost:3001/api/expired-assignments')
+    const nextAssignments = await fetch('https://frozen-temple-38935.herokuapp.com/api/next-assignments')
+    const deadAssignments =  await fetch('https://frozen-temple-38935.herokuapp.com/api/expired-assignments')
     const nextAssignmentsJson = await nextAssignments.json()
     const deadAssignmentsJson = await deadAssignments.json()
     /*nextAssignmentsJson.forEach(element => {

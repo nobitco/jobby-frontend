@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node index.js",
+    "dev": "NODE_ENV=development node index.js",
     "build": "next build",
     "start": "node index.js"
   },
@@ -24,11 +24,13 @@
     "create-react-class": "^15.6.3",
     "dotenv": "^5.0.1",
     "express-session": "^1.15.6",
+    "fs": "0.0.1-security",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.20.0",
     "materialize-css": "^0.100.2",
     "mongodb": "^3.0.7",
     "nedb": "^1.8.0",
+    "net": "^1.0.2",
     "next": "^5.1.0",
     "next-auth": "^1.8.1",
     "node-sass": "^4.8.3",

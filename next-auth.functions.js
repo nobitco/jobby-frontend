@@ -206,9 +206,9 @@ module.exports = () => {
         .sendMail({
           to: email,
           from: process.env.EMAIL_FROM,
-          subject: 'Sign in link',
-          text: `Use the link below to sign in:\n\n${url}\n\n`,
-          html: `<p>Use the link below to sign in:</p><p>${url}</p>`
+          subject: 'Solicitud de registro en Jobby',
+          text: `Use este link para confirmar la creación de una cuenta en Jobby. Luego nuestro equipo enviará la clave para entrar. Gracias!. Para entrar:\n\n${url}\n\n`,
+          html: `<p>Hemos recibido una solicitud de cuenta gratis en Jobby. Use este enlace para confirmar su solicitud posteriormente nuestro equipo enviará la contraseña:</p><p>${url}</p>`
         }, (err) => {
           if (err) {
             console.error('Error sending email to ' + email, err)

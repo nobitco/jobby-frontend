@@ -4,8 +4,7 @@ import Layout from '../components/layout/layout'
 import LogBtn from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import Link from 'next/link'
-
-
+import { NextAuth } from 'next-auth/client'
 
 class Login extends Page {
   
@@ -51,7 +50,6 @@ class Login extends Page {
       alert("Authentication failed!.")
     })
   }
-  
 
   render(){
     const wrapperStyle= { display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height:'100vh'}
@@ -79,14 +77,12 @@ class Login extends Page {
                               onChange={this.handlePasswordChange}
                               />
                 </div>
-                <Link href='/dashboard-coord'>
                   <LogBtn label="Entrar" 
                           primary={true} 
                           type='submit' 
                           fullWidth={true} 
                           style={{marginTop: 50}}
                           />
-                  </Link>
               </form>
               <style jsx>{`
               

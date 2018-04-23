@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField'
 import Link from 'next/link'
 
 
-class Login extends React.Component{
+export default class Login extends React.Component{
   
   constructor(props){
     super(props);
@@ -65,4 +65,3 @@ class Login extends React.Component{
   }
 }
 
-export default Login;

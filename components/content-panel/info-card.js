@@ -8,6 +8,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import SettingsIcon from 'material-ui/svg-icons/action/settings'
 import createReactClass from 'create-react-class'
 
+
+
 export default class InfoCard extends React.Component{
   
   constructor(props){

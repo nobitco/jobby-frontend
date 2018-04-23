@@ -3,7 +3,7 @@ import Page from '../components/page'
 import Layout from '../components/layout/layout'
 import muiThemeable from 'material-ui/styles/muiThemeable'
 
-class LandingPage extends Page{
+export default class LandingPage extends Page{
   constructor(props){
     super(props);
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; //gets navigator.UserAgent at the very very begining!
@@ -21,5 +21,3 @@ class LandingPage extends Page{
     )
   }
 }
-
-export default muiThemeable()(LandingPage);

@@ -10,9 +10,8 @@ export default class SideBar extends React.Component{
       super(props)
     }
 
-    getValue = (event,value) =>{
-      this.props.getState(value)
-    }
+    getValue = (event,value) => this.props.getState(value)
+    
     
     isSelected = (value, context) => value === context ? { fontSize: '20px', fontWeight: 'bold' } : {}
     
@@ -30,7 +29,6 @@ export default class SideBar extends React.Component{
                            { label: 'Empresas',
                             value: 'empresas'
                             } ];
-
         return(
          <section id='side-bar' className='col s12 m4 l3'>
            <SideBarHeader />
@@ -44,8 +42,6 @@ export default class SideBar extends React.Component{
                                                        key={index}
                                                        innerDivStyle={this.isSelected(item.value,context)}  />)
             }
-
-
           </Menu>
            <style jsx>{`
                 #side-bar{

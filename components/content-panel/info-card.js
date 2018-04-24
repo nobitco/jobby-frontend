@@ -6,6 +6,7 @@ import {List, ListItem} from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import RaisedButton from 'material-ui/RaisedButton'
 import SettingsIcon from 'material-ui/svg-icons/action/settings'
+import Modalbox from '../modalbox'
 
 export default class InfoCard extends React.Component{
   
@@ -13,6 +14,7 @@ export default class InfoCard extends React.Component{
     super(props)
     this.state = {
       slideIndex: 0,
+      showModal: false
     }
   }
   
@@ -64,8 +66,9 @@ export default class InfoCard extends React.Component{
     
   createListComponents = (arrays) => arrays.map( (array, index) => <List key={index}>{ this.createListItemComponents(array) }</List> )
     
-   
+  getModal = (e) => (e !== null) && this.setState({ showModal : true });
   
+  closeModal = (e) => this.setState({ showModal : false });
     
   render(){
     // here it must receive an object with X number of arrays that contains delayed terms and its respective names
@@ -81,12 +84,19 @@ export default class InfoCard extends React.Component{
     
     return(
       <article>
+       { <Modalbox open={this.state.showModal} onCloseRequest={this.closeModal}>{this.modalContent}
+           <form>
+             <label for='input'>Hola</label>
+             <input name='input' type='text' />
+           </form>
+         </Modalbox>  }
         <div className='card-header'>
            <h5 className='card-title '>{this.props.title}</h5>
            <RaisedButton className='settings-btn'
                          label='Configurar'
                          icon={ <SettingsIcon />}
-                         style={settingsBtnStyle} />
+                         style={settingsBtnStyle}
+                         onClick={this.getModal} />
         </div>
         <Card>
           <Tabs onChange={this.handleChange}

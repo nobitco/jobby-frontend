@@ -7,7 +7,7 @@ import SideBar from '../components/side-bar/side-bar'
 import ContentPanel from '../components/content-panel/content-panel'
 import fetch from 'isomorphic-fetch'
 import InfoCard from '../components/content-panel/info-card'
-import Modalbox from '../components/modalbox'
+
 import ReactDOM from 'react-dom'
 
 export default class Dashboard extends Page{
@@ -61,10 +61,10 @@ export default class Dashboard extends Page{
          <BlockWrapper>
            <SideBar context={this.state.context} getState={this.setContextState}/>
            <ContentPanel>
-           <Modalbox>Hola!</Modalbox>
+         
             { this.state.context === 'entregas' && this.getAssignmentsCards(expiredAssignments) }
             { this.state.context === 'practicantes' && this.getStudentsCards(students) }
-            <!--{ this.state.context === 'empresas' && this.getPlacesCards(places) } -->
+            
            </ContentPanel>
          </BlockWrapper>
       </Layout>

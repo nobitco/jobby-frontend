@@ -4,12 +4,13 @@ export default function appLogo(props){
 
     return(
       <div> 
-        <h4><a href='#' >Jobby</a></h4>
+        <p><a href='#' >Jobby</a></p>
          <style jsx>{`
            div{
-              font-weight:200;
+              font-weight:500;
               width:200px;
-             
+              font-size: 26px;
+          
             }
 
             div a{

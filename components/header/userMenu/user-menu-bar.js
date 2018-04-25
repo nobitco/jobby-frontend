@@ -28,8 +28,8 @@ class UserMenuBar extends React.Component{
     if(arrayLength > 0){
       return  (<Badge badgeContent={arrayLength}
                       secondary={true}
-                      badgeStyle={{top: 12, right: 12}} >
-                  <NotificationIcon color={this.props.muiTheme.palette.primary1Color} /> 
+                      badgeStyle={{top: 18, right: 12, width: 20, height: 20}} >
+                  <NotificationIcon color={'#df5850'} /> 
                </Badge>)
     }else{
       return (<NotificationIcon color={this.props.muiTheme.palette.disabledColor} />)
@@ -74,26 +74,29 @@ class UserMenuBar extends React.Component{
                                           leftIcon={<LogoutIcon />} />
                               </Menu>
                             </div>)
+    const notificationDropDown = this.getNotificationIcon(notifications.length)
            
      return(  
         <div className='menu'>
-          <MenuDropdown icon={this.getNotificationIcon(notifications.length)} 
+          <MenuDropdown icon={notificationDropDown} 
                         content={notificationList} 
-                        tooltip={'Notificaciones'}/>                 
+                        tooltip={'Notificaciones'} />                 
           <MenuDropdown icon={<Avatar src='https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg'
                                       size={32} /> }
                         content={userMenuContent} 
                         tooltip={'Usuario'}/>                     
             <style jsx>{`
               .menu{
-                width:140px;
                 list-style:none;
                 display:flex;
                 flex-wrap:wrap;
-                justify-content:space-around;
-                align-items:center;
+                align-items:baseline;
                 padding:0;
+margin-top: -8px;
                 }
+.menu-dropdown{
+margin:0 20px;
+}
 
                 a{
                 color:black;

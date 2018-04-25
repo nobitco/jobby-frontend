@@ -19,15 +19,18 @@ export default class Dashboard extends Page{
     const deadAssignments =  await fetch('http://localhost:3001/api/expired-assignments')
     const students =  await fetch('http://localhost:3001/api/students')
     const places =  await fetch('http://localhost:3001/api/places')
+    const tutors =  await fetch('http://localhost:3001/api/tutors')
     const nextAssignmentsJson = await nextAssignments.json()
     const deadAssignmentsJson = await deadAssignments.json()
     const studentsJson = await students.json()
     const placesJson = await places.json()
+    const tutorsJson = await tutors.json()
     
     props.nextAssignments = nextAssignmentsJson
     props.deadAssignments = deadAssignmentsJson
     props.students = studentsJson
     props.places = placesJson
+    props.tutors = tutorsJson
     
     return props
   }
@@ -37,7 +40,7 @@ export default class Dashboard extends Page{
     //gets navigator.UserAgent at the very very begining!
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
     this.state = {
-      context: 'entregas'
+      context: 'empresas'  //entregas, practicantes, tutores, empresas
     }
   }
   
@@ -47,13 +50,16 @@ export default class Dashboard extends Page{
   
   getStudentsCards = (studentslist) => <InfoCard items={studentslist} keyFilter={'state'} title='Practicantes'/>
   
-  getPlacesCards = (places) => <InfoCard items={places} keyFilter={'state'} title='Practicantes'/>
+  getPlacesCards = (placeslist) => <InfoCard items={placeslist}  title='Empresas'/>
+  
+  getTutorsCards = (tutorslist) => <InfoCard items={tutorslist}  title='Tutores'/>
 
   render(){
     const nextAssignments = this.props.nextAssignments;
     const expiredAssignments = this.props.deadAssignments;
     const students = this.props.students;
     const places = this.props.places;
+    const tutors = this.props.tutors;
     
     return(
       <Layout title='Dashboard' userAgent={this.userAgent}>
@@ -64,12 +70,29 @@ export default class Dashboard extends Page{
          
             { this.state.context === 'entregas' && this.getAssignmentsCards(expiredAssignments) }
             { this.state.context === 'practicantes' && this.getStudentsCards(students) }
-            
+             { this.state.context === 'empresas' && this.getPlacesCards(places) }
+             { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
            </ContentPanel>
          </BlockWrapper>
       </Layout>
     )
   } 
   
+}
+
+/*
+Apis escheme
+*/
+//students
+const Student = {
+  email: "Kyla.Weber25@yahoo.com",
+  lastname: "White" ,
+  username: "Emmet",
+  avatar: 'www.images.com/image1.png' ,
+  role: 'student',
+  place: "Canon",
+  state:"culminado",
+  university:"javeriana",
+  city:'Cali'
 }
   

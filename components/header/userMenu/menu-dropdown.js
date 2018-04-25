@@ -27,7 +27,7 @@ export default class MenuDropdown extends React.Component{
   }
   
   render(){
-     return(<div>
+     return(<div className='menu-btn'>
              <IconBtn  onClick={this.handleClick}
                        tooltip={this.props.tooltip}>
              {this.props.icon}
@@ -40,6 +40,12 @@ export default class MenuDropdown extends React.Component{
                       style={{marginTop: 20}}>
               {this.props.content}
             </Popover>
+            <style jsx>{`
+            .menu-btn{
+              margin:0 7px;
+            }
+              
+        `}</style>
            </div>
     )}
 

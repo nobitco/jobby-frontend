@@ -75,14 +75,15 @@ class UserMenuBar extends React.Component{
                               </Menu>
                             </div>)
     const notificationDropDown = this.getNotificationIcon(notifications.length)
-           
+      /*  unfreeze if notification btn is required! 
+              <MenuDropdown icon={notificationDropDown} 
+                            content={notificationList} 
+                            tooltip={'Notificaciones'} />     */
      return(  
         <div className='menu'>
-          <MenuDropdown icon={notificationDropDown} 
-                        content={notificationList} 
-                        tooltip={'Notificaciones'} />                 
+                       
           <MenuDropdown icon={<Avatar src='https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg'
-                                      size={32} /> }
+                                      size={36} /> }
                         content={userMenuContent} 
                         tooltip={'Usuario'}/>                     
             <style jsx>{`
@@ -92,7 +93,7 @@ class UserMenuBar extends React.Component{
                 flex-wrap:wrap;
                 align-items:baseline;
                 padding:0;
-margin-top: -8px;
+margin-top: 6px;
                 }
 .menu-dropdown{
 margin:0 20px;

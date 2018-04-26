@@ -15,9 +15,11 @@ export default function searchBar(props){
               min-height: 30px;
               max-width:400px;
               margin: 0 auto;
+              display:flex;
+              align-items: center;
+              justify-content: center;
             }
             input[type=text]#search-input{
-            width:90%;
             margin-left:10px;
             border:none;
             font-size:24px;

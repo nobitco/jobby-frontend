@@ -6,13 +6,13 @@ export default class navigationBar extends React.Component{
     super(props)
   }
   
-  getLink = (id) =>{ 
+  getLink = (id, index) =>{ 
      const selectedStyle =  { fontWeight: 'bold', fontSize: 17, color: violet }
     if(id !== this.props.context){
        const href= '/' + id
-       return (<li><Link href={href}><h4><a href='#' id={id} >{id}</a></h4></Link></li>)
+       return (<li key={index}><Link href={href}><h4><a href='#' id={id} >{id}</a></h4></Link></li>)
     }else{
-      return (<li><h4><a style={selectedStyle}>{id}</a></h4></li>)
+      return (<li key={index}><h4><a style={selectedStyle}>{id}</a></h4></li>)
     }
    
 
@@ -22,7 +22,7 @@ render(){
     const pages = [ 'dashboard', 'vacantes']
     return(
           <ul>
-           { pages.map((item, index) => this.getLink(item)) }
+           { pages.map((item, index) => this.getLink(item, index)) }
         
           <style jsx>{`
 

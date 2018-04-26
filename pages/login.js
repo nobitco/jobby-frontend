@@ -6,8 +6,8 @@ import TextField from 'material-ui/TextField'
 import Link from 'next/link'
 import { NextAuth } from 'next-auth/client'
 
+
 class Login extends Page {
-  
   constructor(props){
     super(props);
     this.state = {
@@ -115,4 +115,5 @@ class Login extends Page {
   }
 }
 
-export default Login;
+export default Login
+

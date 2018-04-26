@@ -8,63 +8,70 @@ import ContentPanel from '../components/content-panel/content-panel'
 import fetch from 'isomorphic-fetch'
 import InfoCard from '../components/content-panel/info-card'
 
+import ReactDOM from 'react-dom'
+
 export default class Dashboard extends Page{
   
   static async getInitialProps ({req, query}) {
     let props = await super.getInitialProps({req, query})
 
-    const nextAssignments = await fetch('https://frozen-temple-38935.herokuapp.com/api/next-assignments')
-    const deadAssignments =  await fetch('https://frozen-temple-38935.herokuapp.com/api/expired-assignments')
+    const nextAssignments = await fetch('http://localhost:3001/api/next-assignments')
+    const deadAssignments =  await fetch('http://localhost:3001/api/expired-assignments')
+    const students =  await fetch('http://localhost:3001/api/students')
+    const places =  await fetch('http://localhost:3001/api/places')
+    const tutors =  await fetch('http://localhost:3001/api/tutors')
     const nextAssignmentsJson = await nextAssignments.json()
     const deadAssignmentsJson = await deadAssignments.json()
-    /*nextAssignmentsJson.forEach(element => {
-      console.log(element.nombre)
-      // for return reference
-      <!--
-           <ContentPanel>
-           
-            <InfoCard items={[1,2,3,4,5]}
-                      title='Entregas Próximas'/>
-             <infoCard content={this.props.nextAssignments}
-                       id='nextAssignments' />
-             <infoCard content={this.props.deadAssignments}
-                       id='deadAssignments' />  
-           </ContentPanel>
-           
-           -->
-            <InfoCard items
-                       cardLabel='Entregas Vencidas'
-                       id='entregas-vencidas' />
-                       
-                       <Tab label='Tutores' value={0} />
-            <Tab label='Practicantes' value={1} />
-    })*/
+    const studentsJson = await students.json()
+    const placesJson = await places.json()
+    const tutorsJson = await tutors.json()
     
     props.nextAssignments = nextAssignmentsJson
     props.deadAssignments = deadAssignmentsJson
+    props.students = studentsJson
+    props.places = placesJson
+    props.tutors = tutorsJson
     
     return props
   }
   
   constructor(props){
     super(props);
-    this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; //gets navigator.UserAgent at the very very begining!
-    
+    //gets navigator.UserAgent at the very very begining!
+    this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
+    this.state = {
+      context: 'empresas'  //entregas, practicantes, tutores, empresas
+    }
   }
   
+  setContextState = (state) =>  this.setState({ context : state })
+  
+  getAssignmentsCards = (expiredAssignments) =>  <InfoCard items={expiredAssignments} keyFilter={'role'} title='Entregas Vencidas'/>
+  
+  getStudentsCards = (studentslist) => <InfoCard items={studentslist} keyFilter={'state'} title='Practicantes'/>
+  
+  getPlacesCards = (placeslist) => <InfoCard items={placeslist}  title='Empresas'/>
+  
+  getTutorsCards = (tutorslist) => <InfoCard items={tutorslist}  title='Tutores'/>
+
   render(){
     const nextAssignments = this.props.nextAssignments;
     const expiredAssignments = this.props.deadAssignments;
-
+    const students = this.props.students;
+    const places = this.props.places;
+    const tutors = this.props.tutors;
+    
     return(
       <Layout title='Dashboard' userAgent={this.userAgent}>
          <Header />
          <BlockWrapper>
-           <SideBar />
+           <SideBar context={this.state.context} getState={this.setContextState}/>
            <ContentPanel>
-              <InfoCard items={expiredAssignments}
-                        keyFilter={'role'}
-                        title='Entregas Vencidas'/>
+         
+            { this.state.context === 'entregas' && this.getAssignmentsCards(expiredAssignments) }
+            { this.state.context === 'practicantes' && this.getStudentsCards(students) }
+             { this.state.context === 'empresas' && this.getPlacesCards(places) }
+             { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
            </ContentPanel>
          </BlockWrapper>
       </Layout>
@@ -72,4 +79,19 @@ export default class Dashboard extends Page{
   } 
   
 }
-  
+
+/*
+Apis escheme
+*/
+//students
+const Student = {
+  email: "Kyla.Weber25@yahoo.com",
+  lastname: "White" ,
+  username: "Emmet",
+  avatar: 'www.images.com/image1.png' ,
+  role: 'student',
+  place: "Canon",
+  state:"culminado",
+  university:"javeriana",
+  city:'Cali'
+}

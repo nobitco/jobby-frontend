@@ -3,9 +3,10 @@ import Layout from '../components/layout/layout'
 import LogBtn from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import Link from 'next/link'
+import Page from '../components/page'
 
 
-export default class Login extends React.Component{
+export default class Login extends Page{
   
   constructor(props){
     super(props);

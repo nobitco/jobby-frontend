@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import Divider from  'material-ui/Divider'
+import {violet} from '../theme/theme-colors'
+
 export default function JobListItem(props){
   
   return(
@@ -9,7 +11,7 @@ export default function JobListItem(props){
       <small className='grey-text text-darken-1 right'>Ciudad</small>
      </div>
      <div>
-      <h5>
+      <h5 style={{color: violet}}>
         { props.jobTitle }
        <small className='grey-text right'>Hora de posteo</small>
       </h5>

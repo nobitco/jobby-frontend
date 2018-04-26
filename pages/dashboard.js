@@ -40,7 +40,7 @@ export default class Dashboard extends Page{
     //gets navigator.UserAgent at the very very begining!
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
     this.state = {
-      context: 'empresas'  //entregas, practicantes, tutores, empresas
+      context: 'practicantes'  //entregas, practicantes, tutores, empresas
     }
   }
   
@@ -63,15 +63,16 @@ export default class Dashboard extends Page{
     
     return(
       <Layout title='Dashboard' userAgent={this.userAgent}>
-         <Header />
+         <Header context={'dashboard'}/>
+         <div className='row hide-on-small-only' style={{marginBottom: 40}}></div>
          <BlockWrapper>
            <SideBar context={this.state.context} getState={this.setContextState}/>
            <ContentPanel>
          
             { this.state.context === 'entregas' && this.getAssignmentsCards(expiredAssignments) }
             { this.state.context === 'practicantes' && this.getStudentsCards(students) }
-             { this.state.context === 'empresas' && this.getPlacesCards(places) }
-             { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
+            { this.state.context === 'empresas' && this.getPlacesCards(places) }
+            { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
            </ContentPanel>
          </BlockWrapper>
       </Layout>
@@ -96,3 +97,24 @@ const Student = {
   city:'Cali'
 }
   
+
+//Places
+const Place = {
+  email: "Kyla.Weber25@alcosto.com.co",
+  lastname: "" ,   // no sé si las empresas, posiblemente, manejen sucursales y este campo especifique la sucursal
+  username: "Alcosto",
+  avatar: 'www.images.com/image1.png' ,
+  role: 'place',
+  state:"vigente",   //se me ocurre que este campo en vez de quitarlo, usarlo como la vigencia de la relación entre empresa e universidad, determinado por la cantidad de practicantes ubicados en este lugar
+  vacantes: [
+    { name: 'Diseñador UIX',   //aquí ya podemos manejar NAME
+      description: 'Descripción de la vacante',
+      state:'disponible', 
+    },
+     { name: 'Médico cirujano',
+      description: 'Descripción de la vacante',
+      state:'ocupada', 
+    }
+  ],
+  city:'Cali'
+}

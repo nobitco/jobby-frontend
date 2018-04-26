@@ -13,25 +13,28 @@ export default class Header extends React.Component{
     const wrapperStyle = {
       display: 'flex',
       flexContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      zIndex:1000,
     }
     return(
-          <header className='row'>
-          <Paper style={wrapperStyle}>
-           <nav className='col s12 m10 l8 pull-l2 pull-m1' style={wrapperStyle}>
+          <header className='row' style={{marginBottom: 0}}>
+          <Paper style={wrapperStyle} zDepth={3}>
+           <nav className='col s12 m12 l10 pull-l1' style={wrapperStyle}>
             <AppLogo />
-            <NavigationBar />
+            <NavigationBar context={this.props.context} />
             <UserMenuBar />
            </nav>
             <style jsx>{`
-              header{
-width:100%;
+              header.row{
+                width:100%;
+                margin:0;
+z-index:10;
               }
-nav{
-display:flex;
-justify-content:space-between;
-padding: 0 1.14rem;
-}
+              nav{
+              display:flex;
+              justify-content:space-between;
+              padding: 0 1.14rem;
+              }
             `}
             </style>
             </Paper>

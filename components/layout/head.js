@@ -30,7 +30,6 @@ export default class extends React.Component {
       <Head>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <script src='https://cdn.polyfill.io/v2/polyfill.min.js' />
-
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <title>{this.props.title}</title>
         {stylesheet}

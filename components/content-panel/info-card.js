@@ -39,12 +39,10 @@ export default class InfoCard extends React.Component{
   }
 
   categorizeItems = () => { 
-    
     const tabsLabels = this.getTabsLabels(this.props.items, this.props.keyFilter)
-    
     const keyFilter = this.props.keyFilter
-  
     const lists = new Array()  // must have arrays within it, created dinamically. Number of arrays must be equal to number of tabLabels
+    
     tabsLabels.map((label, index) => {
       lists[index] = []   // creates an empty array within 'lists' array, push it a temporal array filled with common category objects
       const array = []  //temporal array
@@ -81,7 +79,6 @@ export default class InfoCard extends React.Component{
        }else{ 
         return arrays.map( (array, index) => <List key={index}>{ this.createListItemComponents(array) }</List> )
      }   
-      
   }
 
       

@@ -9,11 +9,9 @@ export default function BlockWrapper(props){
       {props.children}         
       <style jsx>{`
         .block{
-          padding:23px 1.14rem;
-          border:1px solid #eaeaea;
-
+          padding:0;
         }
-      `}</style>
+      `}</style> 
     </div>
   )
   

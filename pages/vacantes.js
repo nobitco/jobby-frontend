@@ -7,7 +7,7 @@ import SelectableField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import {List, ListItem} from 'material-ui/List';
 import JobListItem from '../components/job-list-item'
-
+import {violet} from '../theme/theme-colors'
 import SearchBar from '../components/search-bar'
 
 
@@ -18,7 +18,7 @@ export default class Jobs extends Page{
     this.state = {
       companies: '',
       cities: '',
-      fields: '',
+      fields: ''
     }
   }
   
@@ -33,16 +33,16 @@ export default class Jobs extends Page{
     const ciudades = ['Cali', 'Medellín', 'Pasto', 'Bogotá'];
     const campos = ['Diseño Gráfico', 'Ingeniería de Sistemas', 'Medicina', 'Mercadeo'];
     const jobs = ['Diseñador UIX', 'Gestor de Base de Datos', 'Gobernador de Departamento', 'Astronauta', 'Mecánico de motos'];
-    const filterStyles = { margin: '0 40px'}
-    
+    const filterStyles = { margin: '0 40px', color: 'white'}
+    console.log(violet)
     return(
       <Layout title='Vacantes' userAgent={this.userAgent}>
-       <Header />
+       <Header context={'vacantes'} />
         <BlockWrapper>
           <div className='col s12' id='searchBar-wrapper'>
             <SearchBar />
           </div>
-          <div className='col s12 grey lighten-3 center-align' id='filters-wrapper'>
+          <div className='col s12  grey lighten-1 center-align' id='filters-wrapper' >
             <SelectableField id='companies'
                              className='filter left-align'
                              floatingLabelText='Empresa'
@@ -50,7 +50,7 @@ export default class Jobs extends Page{
                              autoWidth={true}
                              style={filterStyles}
                              onChange={this.handleCompaniesChange}>
-              { empresas.map( (empresa, index) =>  (<MenuItem value={index} primaryText={empresa} key={index} /> )) }
+              { empresas.map( (empresa, index) =>  (<MenuItem value={index} primaryText={empresa} key={index} style={{color: violet}}/> )) }
             </SelectableField>
             <SelectableField id='cities'
                              className='filter left-align'
@@ -59,7 +59,7 @@ export default class Jobs extends Page{
                              autoWidth={true}
                              style={filterStyles}
                              onChange={this.handleCitiesChange}>
-              { ciudades.map( (empresa, index) =>  (<MenuItem value={index} primaryText={empresa} key={index} /> )) }
+              { ciudades.map( (empresa, index) =>  (<MenuItem value={index} primaryText={empresa} key={index} style={{color: violet}}/> )) }
             </SelectableField>
             <SelectableField id='fields'
                              className='filter left-align'
@@ -68,7 +68,7 @@ export default class Jobs extends Page{
                              autoWidth={true}
                              style={filterStyles}
                              onChange={this.handleFieldsChange}>
-              { campos.map( (empresa, index) =>  (<MenuItem value={index} primaryText={empresa}  key={index}/> )) }
+              { campos.map( (empresa, index) =>  (<MenuItem value={index} primaryText={empresa}  key={index} style={{color: violet}}/> )) }
             </SelectableField>
           </div>
           <section className='col s8 push-s2' id='job-list-wrapper'>

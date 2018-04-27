@@ -14,6 +14,8 @@ import Divider from 'material-ui/Divider';
 import MenuDropdown from './menu-dropdown'
 import muiThemeable from 'material-ui/styles/muiThemeable';
 import Badge from 'material-ui/Badge';
+import { NextAuth } from 'next-auth/client'
+import Router from 'next/router'
 
 class UserMenuBar extends React.Component{
   
@@ -22,6 +24,7 @@ class UserMenuBar extends React.Component{
     this.state={
       open: false,
     }
+    this.handleSignOut = this.handleSignOut.bind(this)
   }
   
   getNotificationIcon = (arrayLength) => {
@@ -36,6 +39,11 @@ class UserMenuBar extends React.Component{
     }
   }
 
+  async handleSignOut() {
+    await NextAuth.signout()
+    Router.push('/')
+  }
+  
   render(){
     
     const notifications = [
@@ -64,14 +72,15 @@ class UserMenuBar extends React.Component{
                             </List>) 
     const userMenuContent = (<div>
                               <UserDetail name={'Pepita Perez'} 
-                                           role='Coordinadora' avatar='https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg' 
-                                           color={this.props.muiTheme.palette.primary1Color}/>
+                                role='Coordinadora' avatar='https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg' 
+                                color={this.props.muiTheme.palette.primary1Color}/>
                               <Divider />
                               <Menu>
                                 <MenuItem primaryText="Configuración"
-                                          leftIcon={<SettingsIcon />} />
+                                  leftIcon={<SettingsIcon />} />
                                 <MenuItem primaryText="Cerrar Sesión"
-                                          leftIcon={<LogoutIcon />} />
+                                  leftIcon={<LogoutIcon />}
+                                  onClick={ this.handleSignOut }/>
                               </Menu>
                             </div>)
     const notificationDropDown = this.getNotificationIcon(notifications.length)
@@ -152,4 +161,5 @@ color:white;
     </div>
   )
 }
+
 

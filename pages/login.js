@@ -29,6 +29,12 @@ class Login extends Page {
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; //gets navigator.UserAgent at the very very begining!
   }
   
+  async componentDidMount() {
+    if (this.props.session.user) {
+      Router.push(`/auth/callback`)
+    }
+  }
+
   handleEmailChange(event) {
     this.setState({
       email: event.target.value
@@ -59,7 +65,9 @@ class Login extends Page {
 
   render(){
     const wrapperStyle= { display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height:'100vh'}
-    if (!this.props.session.user) {
+    if (this.props.session.user) {
+      return null
+    } else {
       return(
         <Layout title='Login : Bienvenido a Jobby' userAgent={this.userAgent} >
           <div id='wrapper' style={wrapperStyle}>
@@ -107,14 +115,6 @@ class Login extends Page {
               `}</style>
             </div>
           </div>
-        </Layout>
-      )
-    } else {
-      return (
-        <Layout>
-          <Link prefetch href="/dashboard">
-            <a>Usted ya está logueado!</a>
-          </Link>
         </Layout>
       )
     }

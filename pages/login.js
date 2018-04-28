@@ -5,15 +5,21 @@ import LogBtn from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import Link from 'next/link'
 import { NextAuth } from 'next-auth/client'
-
+import Router from 'next/router'
 
 class Login extends Page {
+  static async getInitialProps ({req, query}) {
+    let props = await super.getInitialProps({req, query})
+
+    return props
+  }
+
   constructor(props){
     super(props);
     this.state = {
       email: '',
       password: '',
-      session: this.props.session
+      session: props.session
     }
 
     this.handleEmailChange = this.handleEmailChange.bind(this)

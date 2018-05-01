@@ -7,8 +7,11 @@ import SideBar from '../components/side-bar/side-bar'
 import ContentPanel from '../components/content-panel/content-panel'
 import fetch from 'isomorphic-fetch'
 import InfoCard from '../components/content-panel/info-card'
-
 import ReactDOM from 'react-dom'
+import ModalBox from '../components/modalbox'
+import TextField from 'material-ui/TextField'
+import SavePasswordBtn from 'material-ui/RaisedButton'
+
 
 export default class Dashboard extends Page{
   
@@ -40,8 +43,10 @@ export default class Dashboard extends Page{
     //gets navigator.UserAgent at the very very begining!
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
     this.state = {
-      context: 'empresas'  //entregas, practicantes, tutores, empresas
+      context: 'empresas',  //entregas, practicantes, tutores, empresas
+      showChangePasswordModal: true
     }
+    this.closeChangePasswordModal = this.closeChangePasswordModal.bind(this)
   }
   
   setContextState = (state) =>  this.setState({ context : state })
@@ -54,6 +59,9 @@ export default class Dashboard extends Page{
   
   getTutorsCards = (tutorslist) => <InfoCard items={tutorslist}  title='Tutores'/>
 
+  getModal = (e) => (e !== null) && this.setState({ showChangePasswordModal : true })
+  closeChangePasswordModal = (e) => this.setState({ showChangePasswordModal : false })
+
   render(){
     const nextAssignments = this.props.nextAssignments;
     const expiredAssignments = this.props.deadAssignments;
@@ -65,14 +73,17 @@ export default class Dashboard extends Page{
       <Layout title='Dashboard' userAgent={this.userAgent}>
          <Header />
          <BlockWrapper>
+           <ChangePasswordModal 
+            show = { this.state.showChangePasswordModal }
+            close = {this.closeChangePasswordModal } />
            <SideBar context={this.state.context} getState={this.setContextState}/>
            <ContentPanel>
-         
             { this.state.context === 'entregas' && this.getAssignmentsCards(expiredAssignments) }
             { this.state.context === 'practicantes' && this.getStudentsCards(students) }
-             { this.state.context === 'empresas' && this.getPlacesCards(places) }
-             { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
+            { this.state.context === 'empresas' && this.getPlacesCards(places) }
+            { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
            </ContentPanel>
+
          </BlockWrapper>
       </Layout>
     )
@@ -94,4 +105,36 @@ const Student = {
   state:"culminado",
   university:"javeriana",
   city:'Cali'
+}
+
+class ChangePasswordModal extends React.Component {
+  constructor (props) {
+    super(props)
+  }
+
+  render () {
+    return(
+      <ModalBox open={ this.props.show } onCloseRequest={this.props.close}>{this.props.modalContent}
+        <h6>Establezca su contraseña para culminar el registro en Jobby</h6>
+        <form>
+          <TextField
+            hintText="Password"
+            floatingLabelText="Password"
+            type="password" />
+          <br/>
+          <TextField
+            hintText="Confirmar password "
+            floatingLabelText="Confirmar password"
+            type="password" />
+          <br/>
+          <SavePasswordBtn label="Establecer contraseña" 
+            primary={true} 
+            type='submit' 
+            fullWidth={true} 
+            style={{marginTop: 50}}
+            />
+        </form>
+      </ModalBox>
+    )
+  }
 }

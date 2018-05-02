@@ -7,6 +7,7 @@ import Avatar from 'material-ui/Avatar'
 import RaisedButton from 'material-ui/RaisedButton'
 import SettingsIcon from 'material-ui/svg-icons/action/settings'
 import Modalbox from '../modalbox'
+import Checkbox from 'material-ui/Checkbox'
 
 export default class InfoCard extends React.Component{
   
@@ -14,13 +15,14 @@ export default class InfoCard extends React.Component{
     super(props)
     this.state = {
       slideIndex: 0,
-      showModal: false
+      showModal: false,
+      checkedItems: []
     }
   }
   
   handleChange = (value) => {
     this.setState({
-      slideIndex: value,
+      slideIndex: value
     })
   }
   
@@ -53,16 +55,41 @@ export default class InfoCard extends React.Component{
     })
     
     return lists  // [[tag1Content],[tag2Content],[tag3Content],nTagContent...] 
-  } 
+  }
+  
+  onListItemChecked = (obj) => {
+    var temp = this.state.checkedItems
+    
+    if(this.state.checkedItems.length == 0){
+      temp.push(obj)
+    }else{
+      this.state.checkedItems.forEach((item, i) => { item.username == obj.username ? temp.splice(i, 1) : temp.push(obj) })
+     
+    }
+    
+    /*this.state.checkedItems.map( (item,index) => item !== obj && temp.push(obj) )*/
+    console.log(temp.length)
+    this.setState({ checkedItems: temp})
+   
+  }
    
    createListItemComponents = (array) => {
      return array.map((objs, i) => {
-      return objs.map( (item, index) => <ListItem leftAvatar={<Avatar src={item.avatar} />}
-                                                                      primaryText={item.username}
-                                                                      secondaryText={item.activity}
-                                                                      rightIconButton={<RaisedButton label='Notificar' 
-                                                                      secondary={true} style={{margin: 10,}} />}
-                                                                      key={index} /> )  //iterates nListItem times 
+      return objs.map( (item, index) => {
+       return <ListItem leftAvatar={<Avatar src={item.avatar}  
+                                            style={{  position:'relative', 
+                                                      float: 'left', 
+                                                      marginRight: '0.8em', 
+                                                      marginTop: '-0.6em',
+                                                      top: 0, 
+                                                      left: 0}} />}
+                                            primaryText={item.username}
+                                            secondaryText={item.activity}
+                                            rightIconButton={<RaisedButton label='Notificar' 
+                                                                           secondary={true} 
+                                                                           style={{margin: 10,}} /> }
+                                            key={index} 
+                                            leftCheckbox={<Checkbox onClick={ () => this.onListItemChecked(item) } /> }/> })  //iterates nListItem times 
     })             
   }
     
@@ -70,11 +97,12 @@ export default class InfoCard extends React.Component{
     if(this.props.keyFilter == null){
          return (<List> 
                 { arrays.map((item, index) => (<ListItem leftAvatar={<Avatar src={item.avatar} />}
-                                                                      primaryText={item.username}
-                                                                      secondaryText={item.activity}
-                                                                      rightIconButton={<RaisedButton label='Notificar' 
-                                                                      secondary={true} style={{margin: 10}} />}
-                                                                      key={index} /> )) }
+                                                                             primaryText={item.username}
+                                                                             secondaryText={item.activity}
+                                                                             rightIconButton={<RaisedButton label='Notificar' 
+                                                                                                            secondary={true} 
+                                                                                                            style={{margin: 10}} />}
+                                                                             key={index} /> )) }
                 </List>)
        }else{ 
         return arrays.map( (array, index) => <List key={index}>{ this.createListItemComponents(array) }</List> )

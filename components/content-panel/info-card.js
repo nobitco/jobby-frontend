@@ -59,18 +59,24 @@ export default class InfoCard extends React.Component{
   
   onListItemChecked = (obj) => {
     var temp = this.state.checkedItems
-    
-    if(this.state.checkedItems.length == 0){
+    var indexRemove = -1
+
+    if (temp.length == 0) {
+      // free list
       temp.push(obj)
-    }else{
-      this.state.checkedItems.forEach((item, i) => { item.username == obj.username ? temp.splice(i, 1) : temp.push(obj) })
-     
+    } else {
+      // Are there elements? then check if obj is in temp!
+      temp.forEach((element, index) => {
+        if (element.username == obj.username) indexRemove = index
+      })
+      // not exist then set obj otherwise remove!
+      if (indexRemove == -1)
+        temp.push(obj)
+      else
+        temp.splice(indexRemove, 1)
     }
-    
-    /*this.state.checkedItems.map( (item,index) => item !== obj && temp.push(obj) )*/
-    console.log(temp.length)
-    this.setState({ checkedItems: temp})
-   
+    // update state!
+    this.setState ({ checkedItems: temp })
   }
    
    createListItemComponents = (array) => {

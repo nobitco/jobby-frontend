@@ -11,10 +11,9 @@ import ReactDOM from 'react-dom'
 import ModalBox from '../components/modalbox'
 import TextField from 'material-ui/TextField'
 import SavePasswordBtn from 'material-ui/RaisedButton'
-
+import Dialog from 'material-ui/Dialog'
 
 export default class Dashboard extends Page{
-  
   static async getInitialProps ({req, query}) {
     let props = await super.getInitialProps({req, query})
 
@@ -44,15 +43,12 @@ export default class Dashboard extends Page{
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
     this.state = {
       context: 'empresas',  //entregas, practicantes, tutores, empresas
-      showChangePasswordModal: false
+      showChangePasswordModal: props.session.user.passwordVerified == undefined ? true : false
     }
-
-    this.closeChangePasswordModal = this.closeChangePasswordModal.bind(this)
   }
 
   componentDidMount () {
-    // if (this.props.session.user.passwordVerified == undefined) this.setState({ showChangePasswordModal: true })
-    if (this.props.session.user.passwordVerified == undefined) this.setState({ showChangePasswordModal: true })
+    console.log("didMOunt")
   }
 
   setContextState = (state) =>  this.setState({ context : state })
@@ -67,8 +63,6 @@ export default class Dashboard extends Page{
 
   getModal = (e) => (e !== null) && this.setState({ showChangePasswordModal : true })
   
-  closeChangePasswordModal = (e) => this.setState({ showChangePasswordModal : false })
-
   render(){
     const nextAssignments = this.props.nextAssignments;
     const expiredAssignments = this.props.deadAssignments;
@@ -82,7 +76,8 @@ export default class Dashboard extends Page{
          <BlockWrapper>
            <ChangePasswordModal 
             show = { this.state.showChangePasswordModal }
-            close = {this.closeChangePasswordModal } />
+            session = { this.props.session }
+           />
            <SideBar context={this.state.context} getState={this.setContextState}/>
            <ContentPanel>
             { this.state.context === 'entregas' && this.getAssignmentsCards(expiredAssignments) }
@@ -95,7 +90,6 @@ export default class Dashboard extends Page{
       </Layout>
     )
   } 
-  
 }
 
 /*
@@ -117,31 +111,46 @@ const Student = {
 class ChangePasswordModal extends React.Component {
   constructor (props) {
     super(props)
+    
+    this.state = {
+      open: props.show,
+      session: props.session
+    }
+    this.handleClose = this.handleClose.bind()
   }
 
+  handleClose = (event) => {
+    event.preventDefault()
+    
+    this.setState({ open: false })
+  }
+  
   render () {
-    return(
-      <ModalBox open={ this.props.show } onCloseRequest={this.props.close}>{this.props.modalContent}
-        <h6>Establezca su contraseña para culminar el registro en Jobby</h6>
-        <form>
-          <TextField
-            hintText="Password"
-            floatingLabelText="Password"
-            type="password" />
-          <br/>
-          <TextField
-            hintText="Confirmar password "
-            floatingLabelText="Confirmar password"
-            type="password" />
-          <br/>
-          <SavePasswordBtn label="Establecer contraseña" 
-            primary={true} 
-            type='submit' 
-            fullWidth={true} 
-            style={{marginTop: 50}}
-            />
-        </form>
-      </ModalBox>
+    return (
+    <Dialog
+      title="Establecer password!"
+      modal={true}
+      open={this.state.open}>
+      <form id="setpassword" method="post" action="/auth/setpassword" onSubmit={ this.handleClose }>
+        <input name="_csrf" type="hidden" value={this.state.session.csrfToken}/>
+        <TextField
+          hintText="Password"
+          floatingLabelText="Password"
+          type="password" />
+        <br/>
+        <TextField
+          hintText="Confirmar password "
+          floatingLabelText="Confirmar password"
+          type="password" />
+        <br/>
+        <SavePasswordBtn label="Establecer password" 
+          primary={true} 
+          type='submit' 
+          fullWidth={true} 
+          style={{ marginTop: 50 }}
+          />
+      </form>
+    </Dialog>    
     )
   }
 }

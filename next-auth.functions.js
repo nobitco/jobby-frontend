@@ -188,6 +188,7 @@ module.exports = () => {
               name: user.name,
               email: user.email,
               emailVerified: user.emailVerified,
+              passwordVerified: user.passwordVerified,
               admin: user.admin || false
             })
           })
@@ -241,7 +242,7 @@ module.exports = () => {
             // Check credentials - e.g. compare bcrypt password hashes
             if (form.password == "test1234") {
               // If valid, return user object - e.g. { id, name, email }
-              console.log(form.password)
+              console.log(user)
               return resolve(user)
             } else {
               // If invalid, return null

@@ -44,11 +44,17 @@ export default class Dashboard extends Page{
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
     this.state = {
       context: 'empresas',  //entregas, practicantes, tutores, empresas
-      showChangePasswordModal: true
+      showChangePasswordModal: false
     }
+
     this.closeChangePasswordModal = this.closeChangePasswordModal.bind(this)
   }
-  
+
+  componentDidMount () {
+    // if (this.props.session.user.passwordVerified == undefined) this.setState({ showChangePasswordModal: true })
+    if (this.props.session.user.passwordVerified == undefined) this.setState({ showChangePasswordModal: true })
+  }
+
   setContextState = (state) =>  this.setState({ context : state })
   
   getAssignmentsCards = (expiredAssignments) =>  <InfoCard items={expiredAssignments} keyFilter={'role'} title='Entregas Vencidas'/>
@@ -60,6 +66,7 @@ export default class Dashboard extends Page{
   getTutorsCards = (tutorslist) => <InfoCard items={tutorslist}  title='Tutores'/>
 
   getModal = (e) => (e !== null) && this.setState({ showChangePasswordModal : true })
+  
   closeChangePasswordModal = (e) => this.setState({ showChangePasswordModal : false })
 
   render(){

@@ -9,7 +9,10 @@ import fetch from 'isomorphic-fetch'
 import InfoCard from '../components/content-panel/info-card'
 import ReactDOM from 'react-dom'
 import Actionbar from '../components/actionbar'
-
+import Modalbox  from '../components/modalbox'
+import RaisedButton from 'material-ui/RaisedButton'
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 
 export default class Dashboard extends Page{
   
@@ -42,14 +45,30 @@ export default class Dashboard extends Page{
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
     this.state = {
       context: 'practicantes',  //entregas, practicantes, tutores, empresas
-      checkedItems: []
+      checkedItems: [],
+      showDialog: false,
     }
   }
-  clearSelections = (e) =>{
+  
+  showDialog = () => this.setState({ showDialog : true })
+  
+  closeDialog = () => this.setState({ showDialog : false });
+  
+  clearSelections = () =>{
     this.setState({ checkedItems: [] })  
   }
   
-  setContextState = (state) =>  this.setState({ context : state })
+  setContextState = (state) =>  {
+    if(this.state.checkedItems.length > 0 ){
+     if(confirm('¿Está seguro? Se perderán todas las selecciones hechas')){
+       this.setState({ checkedItems: [] }) 
+       this.setState({ context : state }) 
+     }
+    }else{
+     this.setState({ context : state }) 
+    }
+      
+  }
   
   getAssignmentsCards = (expiredAssignments) =>  <InfoCard items={expiredAssignments} 
                                                            keyFilter={'role'} 
@@ -74,7 +93,7 @@ export default class Dashboard extends Page{
                                              onCheckItems={this.getCheckedItems}/>
   
   getCheckedItems = (array) => this.setState({ checkedItems: array })
-
+  
   render(){
   
     const nextAssignments = this.props.nextAssignments;
@@ -82,12 +101,13 @@ export default class Dashboard extends Page{
     const students = this.props.students;
     const places = this.props.places;
     const tutors = this.props.tutors;
-    
+
     return(
       <Layout title='Dashboard' userAgent={this.userAgent}>
          <Header context={'dashboard'}/>
          <div className='row hide-on-small-only' style={{marginBottom: 40}}></div>
          <BlockWrapper>
+         
            <SideBar context={this.state.context} getState={this.setContextState}/>
            <ContentPanel>
          

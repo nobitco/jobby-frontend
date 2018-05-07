@@ -6,6 +6,7 @@ import Divider from 'material-ui/Divider'
 import {violet} from '../theme/theme-colors'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton';
+
 export default class Actionbar extends React.Component{
   constructor(props){
     super(props)
@@ -29,7 +30,7 @@ export default class Actionbar extends React.Component{
     return(
     <Drawer open={this.props.open} openSecondary={true} zDepth={4} width={400} >
      <div id='wrapper'>
-        <h6>Realizar Acción en lote para</h6>
+        <h6>Realizar Acción en lote para</h6> <p>{this.props.content.length} elementos</p>
         <Divider />
         <div id='selected-container'>
           {this.makeChips(this.props.content)}

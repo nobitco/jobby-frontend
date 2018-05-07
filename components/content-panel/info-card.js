@@ -85,7 +85,7 @@ export default class InfoCard extends React.Component{
                                             secondaryText={item.activity}
                                             rightIconButton={<RaisedButton label='Notificar' 
                                                                            secondary={true} 
-                                                                           style={{margin: 10,}} /> }
+                                                                           style={{margin: 10}} /> }
                                             key={index} 
                                             leftCheckbox={<Checkbox onClick={ () => this.onListItemChecked(item) } 
                                                                     checked={this.isChecked(item)}/> }  /> })  //iterates nListItem times 
@@ -95,13 +95,21 @@ export default class InfoCard extends React.Component{
   createListComponents = (arrays) => {
     if(this.props.keyFilter == null){
          return (<List> 
-                { arrays.map((item, index) => (<ListItem leftAvatar={<Avatar src={item.avatar} />}
+                { arrays.map((item, index) => (<ListItem leftAvatar={<Avatar src={item.avatar}
+                                                                             style={{ position:'relative', 
+                                                                                      float: 'left', 
+                                                                                      marginRight: '0.8em', 
+                                                                                      marginTop: '-0.6em',
+                                                                                      top: 0, 
+                                                                                      left: 0}} />}
                                                                              primaryText={item.username}
                                                                              secondaryText={item.activity}
                                                                              rightIconButton={<RaisedButton label='Notificar' 
                                                                                                             secondary={true} 
                                                                                                             style={{margin: 10}} />}
-                                                                             key={index} /> )) }
+                                                                             key={index}
+                                                                             leftCheckbox={<Checkbox onClick={ () => this.onListItemChecked(item) } 
+                                                                                                     checked={this.isChecked(item)}/> } /> )) }
                 </List>)
        }else{ 
         return arrays.map( (array, index) => <List key={index}>{ this.createListItemComponents(array) }</List> )

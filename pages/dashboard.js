@@ -7,8 +7,9 @@ import SideBar from '../components/side-bar/side-bar'
 import ContentPanel from '../components/content-panel/content-panel'
 import fetch from 'isomorphic-fetch'
 import InfoCard from '../components/content-panel/info-card'
-
 import ReactDOM from 'react-dom'
+import Actionbar from '../components/actionbar'
+
 
 export default class Dashboard extends Page{
   
@@ -40,21 +41,42 @@ export default class Dashboard extends Page{
     //gets navigator.UserAgent at the very very begining!
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
     this.state = {
-      context: 'practicantes'  //entregas, practicantes, tutores, empresas
+      context: 'practicantes',  //entregas, practicantes, tutores, empresas
+      checkedItems: []
     }
+  }
+  clearSelections = (e) =>{
+    this.setState({ checkedItems: [] })  
   }
   
   setContextState = (state) =>  this.setState({ context : state })
   
-  getAssignmentsCards = (expiredAssignments) =>  <InfoCard items={expiredAssignments} keyFilter={'role'} title='Entregas Vencidas'/>
+  getAssignmentsCards = (expiredAssignments) =>  <InfoCard items={expiredAssignments} 
+                                                           keyFilter={'role'} 
+                                                           title='Entregas Vencidas' 
+                                                           checkedItems={this.state.checkedItems}
+                                                           onCheckItems={this.getCheckedItems} />
   
-  getStudentsCards = (studentslist) => <InfoCard items={studentslist} keyFilter={'state'} title='Practicantes'/>
+  getStudentsCards = (studentslist) => <InfoCard items={studentslist} 
+                                                 keyFilter={'state'} 
+                                                 title='Practicantes' 
+                                                 checkedItems={this.state.checkedItems}
+                                                 onCheckItems={this.getCheckedItems}/>
   
-  getPlacesCards = (placeslist) => <InfoCard items={placeslist}  title='Empresas'/>
+  getPlacesCards = (placeslist) => <InfoCard items={placeslist}  
+                                             title='Empresas' 
+                                             checkedItems={this.state.checkedItems}
+                                             onCheckItems={this.getCheckedItems}/>
   
-  getTutorsCards = (tutorslist) => <InfoCard items={tutorslist}  title='Tutores'/>
+  getTutorsCards = (tutorslist) => <InfoCard items={tutorslist}  
+                                             title='Tutores' 
+                                             checkedItems={this.state.checkedItems}
+                                             onCheckItems={this.getCheckedItems}/>
+  
+  getCheckedItems = (array) => this.setState({ checkedItems: array })
 
   render(){
+  
     const nextAssignments = this.props.nextAssignments;
     const expiredAssignments = this.props.deadAssignments;
     const students = this.props.students;
@@ -74,6 +96,7 @@ export default class Dashboard extends Page{
             { this.state.context === 'empresas' && this.getPlacesCards(places) }
             { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
            </ContentPanel>
+           <Actionbar content={this.state.checkedItems} open={this.state.checkedItems.length > 0 ? true : false} onUndo={this.clearSelections}/>
          </BlockWrapper>
       </Layout>
     )

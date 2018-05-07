@@ -16,7 +16,7 @@ export default class InfoCard extends React.Component{
     this.state = {
       slideIndex: 0,
       showModal: false,
-      checkedItems: []
+      checkedItems: this.props.checkedItems
     }
   }
   
@@ -25,7 +25,7 @@ export default class InfoCard extends React.Component{
       slideIndex: value
     })
   }
-  
+
   /* gets the tab labels according to a key object parameter*/
   getTabsLabels = (items, key) => {    
     const labels = []
@@ -59,24 +59,16 @@ export default class InfoCard extends React.Component{
   
   onListItemChecked = (obj) => {
     var temp = this.state.checkedItems
-    var indexRemove = -1
-
-    if (temp.length == 0) {
-      // free list
-      temp.push(obj)
-    } else {
-      // Are there elements? then check if obj is in temp!
-      temp.forEach((element, index) => {
-        if (element.username == obj.username) indexRemove = index
-      })
-      // not exist then set obj otherwise remove!
-      if (indexRemove == -1)
-        temp.push(obj)
-      else
-        temp.splice(indexRemove, 1)
-    }
-    // update state!
-    this.setState ({ checkedItems: temp })
+    var indexMatch = temp.indexOf(obj) 
+      indexMatch > -1 ? temp.splice(indexMatch, 1) : temp.push(obj)
+      this.props.onCheckItems(temp)
+      this.setState({ checkedItems : temp })
+  }
+  
+  isChecked = (item) => this.state.checkedItems.indexOf(item) > -1 ? true : false 
+  
+  componentWillReceiveProps(nextProps){  // lets the list items update when undo btn is triggered
+    this.props.checkedItems !== nextProps.checkedItems && this.setState({ checkedItems : nextProps.checkedItems}) 
   }
    
    createListItemComponents = (array) => {
@@ -95,7 +87,8 @@ export default class InfoCard extends React.Component{
                                                                            secondary={true} 
                                                                            style={{margin: 10,}} /> }
                                             key={index} 
-                                            leftCheckbox={<Checkbox onClick={ () => this.onListItemChecked(item) } /> }/> })  //iterates nListItem times 
+                                            leftCheckbox={<Checkbox onClick={ () => this.onListItemChecked(item) } 
+                                                                    checked={this.isChecked(item)}/> }  /> })  //iterates nListItem times 
     })             
   }
     

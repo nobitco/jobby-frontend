@@ -20,7 +20,8 @@ export default class Jobs extends Page{
     this.state = {
       companies: '',
       cities: '',
-      fields: ''
+      fields: '',
+      searchText: ''
     }
   }
   
@@ -34,6 +35,25 @@ export default class Jobs extends Page{
     return props
   }
   
+  filterSearch = (places, searchFilter) => {
+    
+    const filteredJobs = []
+    places.forEach( (place, index) => place.jobs.forEach((job, index) => (job.name.toLowerCase().indexOf(searchFilter) > -1) && filteredJobs.push(job)))
+    return filteredJobs;
+                        
+  }
+  
+  makeJobListItemComponents = (array) => {
+    return array.map((item, index ) => <JobListItem jobTitle={item.name}
+                                          place={'place.username'}
+                                          key={index}
+                                          posttime={item.postime}
+                                          city={'place.city'}
+                                          avatar={'https://opensource.org/files/osi_standard_logo.png'} />)
+  }
+  
+  getSearchText = (searchText) => this.setState({ searchText : searchText }) 
+  
   handleCompaniesChange = (event, index, value) => this.setState({ companies: value});
   
   handleCitiesChange = (event, index, value) => this.setState({ cities: value});
@@ -41,6 +61,7 @@ export default class Jobs extends Page{
   handleFieldsChange = (event, index, value) => this.setState({ fields: value});
   
   render(){
+    
     const empresas = ['Exito', 'Carvajal', 'Colombina'];
     const ciudades = ['Cali', 'Medellín', 'Pasto', 'Bogotá'];
     const campos = ['Diseño Gráfico', 'Ingeniería de Sistemas', 'Medicina', 'Mercadeo'];
@@ -51,7 +72,7 @@ export default class Jobs extends Page{
        <Header context={'vacantes'} />
         <BlockWrapper>
           <div className='col s12' id='searchBar-wrapper'>
-            <SearchBar />
+            <SearchBar value={this.state.searchText} onSearchText={this.getSearchText}/>
           </div>
           <div className='row grey lighten-1 center-align' id='filters-wrapper' >
             <SelectableField id='companies'
@@ -84,14 +105,7 @@ export default class Jobs extends Page{
           </div>
           <section className='col s12 m10 push-m1 l8 push-l2' id='job-list-wrapper'>
            
-              { this.props.places.map( (place, index) => place.jobs.map((job, index) =>  <JobListItem jobTitle={job.name}
-                                                                                                      place={place.username}
-                                                                                                      key={index}
-                                                                                                      posttime={job.postime}
-                                                                                                      city={place.city}
-                                                                                                      avatar={place.avatar}/>)
-                      
-            )}
+              { this.makeJobListItemComponents(this.filterSearch(this.props.places, this.state.searchText))  }
          
           </section>
         </BlockWrapper>

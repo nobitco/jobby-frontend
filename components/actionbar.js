@@ -3,10 +3,11 @@ import Drawer from 'material-ui/Drawer';
 import Chip from 'material-ui/Chip';
 import Avatar from 'material-ui/Avatar'
 import Divider from 'material-ui/Divider'
-import {violet} from '../theme/theme-colors'
+import {blueGreyLigthen5, red} from '../theme/theme-colors'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton';
-
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import ClearIcon from 'material-ui/svg-icons/content/clear';
 export default class Actionbar extends React.Component{
   constructor(props){
     super(props)
@@ -15,8 +16,8 @@ export default class Actionbar extends React.Component{
     return array.map((item, index) => {
         return (<Chip  key={index}
                        style={{margin: '10px 0'}}
-                       labelStyle={{color: '#FFFFFF'}}
-                       backgroundColor={violet} >
+               
+                       backgroundColor={blueGreyLigthen5} >
                   <Avatar src={item.avatar} />
                   {item.username}
                 </Chip>)
@@ -30,15 +31,24 @@ export default class Actionbar extends React.Component{
     return(
     <Drawer open={this.props.open} openSecondary={true} zDepth={4} width={400} >
      <div id='wrapper'>
-        <h6>Realizar Acción en lote para</h6> <p>{this.props.content.length} elementos</p>
-        <Divider />
+        <FlatButton className='right' 
+                    secondary={true} 
+                    icon={<ClearIcon />} 
+                    label="Deshacer" 
+                    onClick={this.handleUndo} />
+         <h5>{this.props.context[0].toUpperCase()}{this.props.context.substring(1,this.props.context.length)}</h5>
+        <Divider style={{marginBottom: 8}}/>
+        <small className='grey-text text-ligthen-2'>{this.props.content.length} seleccionados</small>
         <div id='selected-container'>
           {this.makeChips(this.props.content)}
         </div>
-        <FlatButton label="Deshacer" onClick={this.handleUndo} />
-        <RaisedButton label='Eliminar Usuarios'/>
-        <RaisedButton label='Acción 3'/>
-       
+        <div id='action-btns'>
+          {this.props.actions}
+        <RaisedButton label='Eliminar Usuarios' 
+                      secondary={true}
+                      icon={<DeleteIcon />} />
+        {this.props.context === 'entregas' && <RaisedButton  label='Notificar' primary={true}/>} 
+        </div> 
      </div>
       <style jsx>{`
             #wrapper{
@@ -46,6 +56,10 @@ export default class Actionbar extends React.Component{
 padding: 25px 30px;
              
             }
+#action-btns{
+display:flex;
+justify-content:space-between;
+}
 #selected-container{
     padding: 25px 2px;
              

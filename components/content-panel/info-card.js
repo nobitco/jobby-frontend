@@ -8,6 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import SettingsIcon from 'material-ui/svg-icons/action/settings'
 import Modalbox from '../modalbox'
 import Checkbox from 'material-ui/Checkbox'
+import LookIcon from 'material-ui/svg-icons/action/visibility'
 
 export default class InfoCard extends React.Component{
   
@@ -83,9 +84,10 @@ export default class InfoCard extends React.Component{
                                                       left: 0}} />}
                                             primaryText={item.username}
                                             secondaryText={item.activity}
-                                            rightIconButton={<RaisedButton label='Notificar' 
-                                                                           secondary={true} 
-                                                                           style={{margin: 10}} /> }
+                                            rightIconButton={<RaisedButton label='Ver Detalle' 
+                                                                           primary={true} 
+                                                                           style={{margin: 10}} 
+                                                                           icon={<LookIcon />}/> }
                                             key={index} 
                                             leftCheckbox={<Checkbox onClick={ () => this.onListItemChecked(item) } 
                                                                     checked={this.isChecked(item)}/> }  /> })  //iterates nListItem times 

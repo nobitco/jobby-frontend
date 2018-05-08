@@ -101,7 +101,9 @@ export default class Dashboard extends Page{
     const students = this.props.students;
     const places = this.props.places;
     const tutors = this.props.tutors;
-
+    const actions = [
+      
+    ]
     return(
       <Layout title='Dashboard' userAgent={this.userAgent}>
          <Header context={'dashboard'}/>
@@ -116,7 +118,7 @@ export default class Dashboard extends Page{
             { this.state.context === 'empresas' && this.getPlacesCards(places) }
             { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
            </ContentPanel>
-           <Actionbar content={this.state.checkedItems} open={this.state.checkedItems.length > 0 ? true : false} onUndo={this.clearSelections}/>
+           <Actionbar content={this.state.checkedItems} open={this.state.checkedItems.length > 0 ? true : false} onUndo={this.clearSelections} context={this.state.context}/>
          </BlockWrapper>
       </Layout>
     )

@@ -44,9 +44,9 @@ require('dotenv').load()
 // This config file uses MongoDB for User accounts, as well as session storage.
 // This config includes options for NeDB, which it defaults to if no DB URI 
 // is specified. NeDB is an in-memory only database intended here for testing.
-const MongoClient = require('mongodb').MongoClient
+const MySqlClient = require('mysql')
 const NeDB = require('nedb')
-const MongoObjectId = (process.env.MONGO_URI) ? require('mongodb').ObjectId : (id) => { return id }
+// const MongoObjectId = (process.env.MONGO_URI) ? require('mongodb').ObjectId : (id) => { return id }
 
 // Use Node Mailer for email sign in
 const nodemailer = require('nodemailer')
@@ -69,13 +69,27 @@ if (process.env.EMAIL_SERVER && process.env.EMAIL_USERNAME && process.env.EMAIL_
 
 module.exports = () => {
   return new Promise((resolve, reject) => {
-    if (process.env.MONGO_URI) { 
+    if (process.env.MYSQL_URI) { 
       // Connect to MongoDB Database and return user connection
+      /*
       MongoClient.connect(process.env.MONGO_URI, (err, mongoClient) => {
         if (err) return reject(err)
         const dbName = process.env.MONGO_URI.split('/').pop().split('?').shift()
         const db = mongoClient.db(dbName)
         return resolve(db.collection('users'))
+      })
+      */
+
+      const connection = MySqlClient.createConnection({
+        host: process.env.MYSQL_HOST,
+        user: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        database: process.env.MYSQL_DBNAME
+      })
+
+      connection.connect(function(err) {
+        if (err) return reject(err)
+        return resolve(connection)
       })
     } else {
       // If no MongoDB URI string specified, use NeDB, an in-memory work-a-like.
@@ -106,6 +120,7 @@ module.exports = () => {
         }
 
         return new Promise((resolve, reject) => {
+
           usersCollection.findOne(query, (err, user) => {
             if (err) return reject(err)
             return resolve(user)
@@ -121,6 +136,7 @@ module.exports = () => {
       // You can use this to capture profile.avatar, profile.location, etc.
       insert: (user, oAuthProfile) => {
         return new Promise((resolve, reject) => {
+          /*
           usersCollection.insert(user, (err, response) => {
             if (err) return reject(err)
 
@@ -128,6 +144,11 @@ module.exports = () => {
             // if using a work-a-like we may need to add it from the response.
             if (!user._id && response._id) user._id = response._id
   
+            return resolve(user)
+          })
+          */
+          usersCollection.query('INSERT TO users SET ?', user, function (err, results, fields) {
+            if (err) return reject(err)
             return resolve(user)
           })
         })

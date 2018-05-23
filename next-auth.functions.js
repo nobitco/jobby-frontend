@@ -70,16 +70,7 @@ if (process.env.EMAIL_SERVER && process.env.EMAIL_USERNAME && process.env.EMAIL_
 module.exports = () => {
   return new Promise((resolve, reject) => {
     if (process.env.MYSQL_HOST) { 
-      // Connect to MongoDB Database and return user connection
-      /*
-      MongoClient.connect(process.env.MONGO_URI, (err, mongoClient) => {
-        if (err) return reject(err)
-        const dbName = process.env.MONGO_URI.split('/').pop().split('?').shift()
-        const db = mongoClient.db(dbName)
-        return resolve(db.collection('users'))
-      })
-      */
-
+      // Connect to MySQL Database and return connection
       const connection = MySqlClient.createConnection({
         host: process.env.MYSQL_HOST,
         user: process.env.MYSQL_USER,
@@ -123,7 +114,7 @@ module.exports = () => {
                 if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
                 return resolve(user)
               } else {
-
+                user = null
                 return resolve(user)
               }
             })
@@ -142,13 +133,12 @@ module.exports = () => {
                 console.log(user)
                 return resolve(user)
               } else {
-                console.log('user not found!')
+                user = null
                 return resolve(user)
               }
             })
           })
         } else if (emailToken) {
-          // query = { emailToken: emailToken }
           return new Promise((resolve, reject) => {
             usersCollection.query('SELECT * FROM users WHERE emailToken: ?',[emailToken], function(err, results, fields) {
               if (err) return reject(err)
@@ -159,7 +149,7 @@ module.exports = () => {
                 if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
                 return resolve(user)
               } else {
-
+                user = null
                 return resolve(user)
               }
             })
@@ -168,14 +158,6 @@ module.exports = () => {
           // query = { [`${provider.name}.id`]: provider.id }
           return reject(null)
         }
-        /*
-        return new Promise((resolve, reject) => {
-          usersCollection.findOne(query, (err, user) => {
-            if (err) return reject(err)
-            return resolve(user)
-          })
-        })
-        */
       },
       // The user parameter contains a basic user object to be added to the DB.
       // The oAuthProfile parameter is passed when signing in via oAuth.
@@ -186,18 +168,6 @@ module.exports = () => {
       // You can use this to capture profile.avatar, profile.location, etc.
       insert: (user, oAuthProfile) => {
         return new Promise((resolve, reject) => {
-          /*
-          usersCollection.insert(user, (err, response) => {
-            if (err) return reject(err)
-
-            // Mongo Client automatically adds an id to an inserted object, but 
-            // if using a work-a-like we may need to add it from the response.
-            if (!user._id && response._id) user._id = response._id
-  
-            return resolve(user)
-          })
-          */
-          console.log('insert user')
           let timeNow = new Date()
 
           user.createdAt = timeNow
@@ -205,7 +175,8 @@ module.exports = () => {
           user.emailVerified = false
           user.username = user.email
           user.password = '12345'
-          usersCollection.query('INSERT TO users SET ?', user, function (err, results, fields) {
+          console.log(user)
+          usersCollection.query('INSERT INTO users SET ?', user, function (err, results, fields) {
             if (err) return reject(err)
             return resolve(user)
           })

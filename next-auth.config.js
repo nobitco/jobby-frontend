@@ -25,13 +25,13 @@ const MySQLStore = require('express-mysql-session')(expressSession)
 // If no store set, NextAuth defaults to using Express Sessions in-memory
 // session store (the fallback is intended as fallback for testing only).
 let sessionStore 
-if (process.env.MYSQL_URI) { 
+if (process.env.MYSQL_HOST) { 
   sessionStore = new MySQLStore({
-    host: 'localhost',
+    host: process.env.MYSQL_HOST,
     port: 3306,
-    user: 'admjobby',
-    password: '12345',
-    database: 'jobby'
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DBNAME
   })
 }  
 

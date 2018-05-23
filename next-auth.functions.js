@@ -89,7 +89,7 @@ module.exports = () => {
 
       connection.connect(function(err) {
         if (err) return reject(err)
-        console.log('Success connection!')
+        console.log('Success DB connection!')
         return resolve(connection)
       })
     } else {
@@ -115,6 +115,7 @@ module.exports = () => {
           // query = { _id: MongoObjectId(id) }
           return new Promise((resolve, reject) => {
             usersCollection.query('SELECT * FROM users WHERE id: ?',[id], function(err, results, fields) {
+              if (err) return reject(err)
               if (results.length !== 0) {
                 user.id = results[0].id
                 user.username = results[0].username
@@ -122,22 +123,27 @@ module.exports = () => {
                 if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
                 return resolve(user)
               } else {
-                return reject(null)
+
+                return resolve(user)
               }
             })
           })
         } else if (email) {
           // query = { email: email }
           return new Promise((resolve, reject) => {
-            usersCollection.query('SELECT * FROM users WHERE email: ?',[email], function(err, results, fields) {
+            usersCollection.query('SELECT * FROM users WHERE email= ?',[email], function(err, results, fields) {
+              console.log('find by email!')
+              if (err) return reject(err)
               if (results.length !== 0) {
                 user.id = results[0].id
                 user.username = results[0].username
                 user.email = results[0].email
                 if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
+                console.log(user)
                 return resolve(user)
               } else {
-                return reject(null)
+                console.log('user not found!')
+                return resolve(user)
               }
             })
           })
@@ -145,6 +151,7 @@ module.exports = () => {
           // query = { emailToken: emailToken }
           return new Promise((resolve, reject) => {
             usersCollection.query('SELECT * FROM users WHERE emailToken: ?',[emailToken], function(err, results, fields) {
+              if (err) return reject(err)
               if (results.length !== 0) {
                 user.id = results[0].id
                 user.username = results[0].username
@@ -152,7 +159,8 @@ module.exports = () => {
                 if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
                 return resolve(user)
               } else {
-                return reject(null)
+
+                return resolve(user)
               }
             })
           })
@@ -189,10 +197,14 @@ module.exports = () => {
             return resolve(user)
           })
           */
+          console.log('insert user')
           let timeNow = new Date()
 
           user.createdAt = timeNow
           user.updatedAt = timeNow
+          user.emailVerified = false
+          user.username = user.email
+          user.password = '12345'
           usersCollection.query('INSERT TO users SET ?', user, function (err, results, fields) {
             if (err) return reject(err)
             return resolve(user)
@@ -214,6 +226,7 @@ module.exports = () => {
             return resolve(user)
           })
           */
+         console.log('update user!')
          if (user.emailToken) {
           connection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [user.emailToken, false, user.id], function (err, results, fields) {
             if (err) return reject(err)

@@ -89,6 +89,7 @@ module.exports = () => {
 
       connection.connect(function(err) {
         if (err) return reject(err)
+        console.log('Success connection!')
         return resolve(connection)
       })
     } else {
@@ -106,26 +107,67 @@ module.exports = () => {
       // If a user is not found find() should return null (with no error).
       find: ({id, email, emailToken, provider} = {}) => {
         let query = {}
+        let user = {}
  
         // Find needs to support looking up a user by ID, Email, Email Token,
         // and Provider Name + Users ID for that Provider
         if (id) {
-          query = { _id: MongoObjectId(id) }
+          // query = { _id: MongoObjectId(id) }
+          return new Promise((resolve, reject) => {
+            usersCollection.query('SELECT * FROM users WHERE id: ?',[id], function(err, results, fields) {
+              if (results.length !== 0) {
+                user.id = results[0].id
+                user.username = results[0].username
+                user.email = results[0].email
+                if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
+                return resolve(user)
+              } else {
+                return reject(null)
+              }
+            })
+          })
         } else if (email) {
-          query = { email: email }
+          // query = { email: email }
+          return new Promise((resolve, reject) => {
+            usersCollection.query('SELECT * FROM users WHERE email: ?',[email], function(err, results, fields) {
+              if (results.length !== 0) {
+                user.id = results[0].id
+                user.username = results[0].username
+                user.email = results[0].email
+                if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
+                return resolve(user)
+              } else {
+                return reject(null)
+              }
+            })
+          })
         } else if (emailToken) {
-          query = { emailToken: emailToken }
+          // query = { emailToken: emailToken }
+          return new Promise((resolve, reject) => {
+            usersCollection.query('SELECT * FROM users WHERE emailToken: ?',[emailToken], function(err, results, fields) {
+              if (results.length !== 0) {
+                user.id = results[0].id
+                user.username = results[0].username
+                user.email = results[0].email
+                if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
+                return resolve(user)
+              } else {
+                return reject(null)
+              }
+            })
+          })
         } else if (provider) {
-          query = { [`${provider.name}.id`]: provider.id }
+          // query = { [`${provider.name}.id`]: provider.id }
+          return reject(null)
         }
-
+        /*
         return new Promise((resolve, reject) => {
-
           usersCollection.findOne(query, (err, user) => {
             if (err) return reject(err)
             return resolve(user)
           })
         })
+        */
       },
       // The user parameter contains a basic user object to be added to the DB.
       // The oAuthProfile parameter is passed when signing in via oAuth.
@@ -147,6 +189,10 @@ module.exports = () => {
             return resolve(user)
           })
           */
+          let timeNow = new Date()
+
+          user.createdAt = timeNow
+          user.updatedAt = timeNow
           usersCollection.query('INSERT TO users SET ?', user, function (err, results, fields) {
             if (err) return reject(err)
             return resolve(user)
@@ -162,10 +208,23 @@ module.exports = () => {
       // You can use this to capture profile.avatar, profile.location, etc.
       update: (user, profile) => {
         return new Promise((resolve, reject) => {
+          /*
           usersCollection.update({_id: MongoObjectId(user._id)}, user, {}, (err) => {
             if (err) return reject(err)
             return resolve(user)
           })
+          */
+         if (user.emailToken) {
+          connection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [user.emailToken, false, user.id], function (err, results, fields) {
+            if (err) return reject(err)
+            return resolve(user)
+          })
+         } else if (user.emailVerified) {
+          connection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [null, user.emailVerified, user.id], function (err, results, fields) {
+            if (err) return reject(err)
+            return resolve(user)
+          })
+         }
         })
       },
       // The remove parameter is passed the ID of a user account to delete.

@@ -241,19 +241,20 @@ module.exports = () => {
       // only fields you want to expose via the user interface.
       deserialize: (id) => {
         return new Promise((resolve, reject) => {
-          usersCollection.findOne({ _id: MongoObjectId(id) }, (err, user) => {
+          usersCollection.query('SELECT * FROM users WHERE id= ?',[id], function(err, results, fields) {
             if (err) return reject(err)
-              
-            // If user not found (e.g. account deleted) return null object
-            if (!user) return resolve(null)
-              
-            return resolve({
-              id: user._id,
-              name: user.name,
-              email: user.email,
-              emailVerified: user.emailVerified,
-              admin: user.admin || false
-            })
+
+            if (results.length !== 0) {
+              return resolve({
+                id: results[0].id,
+                name: results[0].username,
+                email: results[0].email,
+                emailVerified: results[0].emailVerified,
+                admin: results[0].admin || false
+              })
+            } else {
+              resolve(null)
+            }
           })
         })
       },

@@ -69,7 +69,7 @@ if (process.env.EMAIL_SERVER && process.env.EMAIL_USERNAME && process.env.EMAIL_
 
 module.exports = () => {
   return new Promise((resolve, reject) => {
-    if (process.env.MYSQL_URI) { 
+    if (process.env.MYSQL_HOST) { 
       // Connect to MongoDB Database and return user connection
       /*
       MongoClient.connect(process.env.MONGO_URI, (err, mongoClient) => {

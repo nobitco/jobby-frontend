@@ -111,7 +111,7 @@ module.exports = () => {
                 user.id = results[0].id
                 user.username = results[0].username
                 user.email = results[0].email
-                if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
+                if (results[0].emailToken !== null) user.emailToken = results[0].emailToken
                 return resolve(user)
               } else {
                 user = null
@@ -129,7 +129,7 @@ module.exports = () => {
                 user.id = results[0].id
                 user.username = results[0].username
                 user.email = results[0].email
-                if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
+                if (results[0].emailToken !== null) user.emailToken = results[0].emailToken
                 console.log(user)
                 return resolve(user)
               } else {
@@ -140,13 +140,16 @@ module.exports = () => {
           })
         } else if (emailToken) {
           return new Promise((resolve, reject) => {
-            usersCollection.query('SELECT * FROM users WHERE emailToken: ?',[emailToken], function(err, results, fields) {
+            console.log(emailToken)
+            usersCollection.query('SELECT * FROM users WHERE emailToken= ?',[emailToken], function(err, results, fields) {
+              console.log('find by emailToken:'+emailToken)
               if (err) return reject(err)
               if (results.length !== 0) {
                 user.id = results[0].id
                 user.username = results[0].username
                 user.email = results[0].email
-                if (results[0].emailToken !== null) user.emailtoken = results[0].emailToken
+                if (results[0].emailToken !== null) user.emailToken = results[0].emailToken
+                console.log(user)
                 return resolve(user)
               } else {
                 user = null
@@ -191,20 +194,17 @@ module.exports = () => {
       // You can use this to capture profile.avatar, profile.location, etc.
       update: (user, profile) => {
         return new Promise((resolve, reject) => {
-          /*
-          usersCollection.update({_id: MongoObjectId(user._id)}, user, {}, (err) => {
-            if (err) return reject(err)
-            return resolve(user)
-          })
-          */
          console.log('update user!')
+         console.log(user)
          if (user.emailToken) {
-          connection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [user.emailToken, false, user.id], function (err, results, fields) {
+          console.log('assign new token')
+          usersCollection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [user.emailToken, false, user.id], function (err, results, fields) {
             if (err) return reject(err)
             return resolve(user)
           })
          } else if (user.emailVerified) {
-          connection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [null, user.emailVerified, user.id], function (err, results, fields) {
+          console.log('email validate')
+          usersCollection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [null, user.emailVerified, user.id], function (err, results, fields) {
             if (err) return reject(err)
             return resolve(user)
           })

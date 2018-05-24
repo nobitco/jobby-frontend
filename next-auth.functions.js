@@ -299,25 +299,28 @@ module.exports = () => {
         return new Promise((resolve, reject) => {
           // Should validate credentials (e.g. hash password, compare 2FA token
           // etc) and return a valid user object from a database.
-            return usersCollection.findOne({
-            email: form.email
-          }, (err, user) => {
+          usersCollection.query('SELECT * FROM users WHERE email= ?',[form.email], function(err, results, fields) {
             if (err) return reject(err)
-            if (!user) return resolve(null)
-            
-            // Check credentials - e.g. compare bcrypt password hashes
-            if (form.password == "test1234") {
-              // If valid, return user object - e.g. { id, name, email }
-              console.log(user)
-              return resolve(user)
+            if (results.length !== 0) {
+              if (results[0].password == form.password) {
+                let user = {}
+                user.id = results[0].id
+                user.name = results[0].username
+                user.email = results[0].email
+                user.emailVerified = results[0].emailVerified
+                user.passwordVerified = results[0].passwordVerified
+                user.admin = results[0].admin || false
+                return resolve(user)
+              } else {
+                return resolve(null)
+              }
             } else {
-              // If invalid, return null
-              return resolve(null)
+              user = null
+              return resolve(user)
             }
-          })
+          })          
         })
       }
-
     })
   })
 }

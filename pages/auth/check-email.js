@@ -20,9 +20,6 @@ export default class extends React.Component {
               <p className="lead">
                 Un correo ha sido enviado a { (this.props.email) ? <span className="font-weight-bold">{this.props.email}</span> : <span>your inbox</span> }.
               </p>
-              <p>
-              <Link href="/"><a>Dashboard</a></Link>
-              </p>
               <style jsx>{`
                 #sendemail-box{
                   max-width: 450px;

@@ -47,7 +47,7 @@ require('dotenv').load()
 const MySqlClient = require('mysql')
 const NeDB = require('nedb')
 // const MongoObjectId = (process.env.MONGO_URI) ? require('mongodb').ObjectId : (id) => { return id }
-
+const crypto = require('crypto')
 // Use Node Mailer for email sign in
 const nodemailer = require('nodemailer')
 const nodemailerSmtpTransport = require('nodemailer-smtp-transport')
@@ -172,14 +172,16 @@ module.exports = () => {
       insert: (user, oAuthProfile) => {
         return new Promise((resolve, reject) => {
           let timeNow = new Date()
+          let shasum = crypto.createHash('sha256')
+          let password = 'jobby521'
 
           user.createdAt = timeNow
           user.updatedAt = timeNow
           user.emailVerified = false
           user.passwordVerified = false
           user.username = user.email
-          user.password = '12345'
-          console.log(user)
+          shasum.update(password)
+          user.password = shasum.digest('hex')
           usersCollection.query('INSERT INTO users SET ?', user, function (err, results, fields) {
             if (err) return reject(err)
             return resolve(user)
@@ -195,16 +197,12 @@ module.exports = () => {
       // You can use this to capture profile.avatar, profile.location, etc.
       update: (user, profile) => {
         return new Promise((resolve, reject) => {
-         console.log('update user!')
-         console.log(user)
          if (user.emailToken) {
-          console.log('assign new token')
           usersCollection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [user.emailToken, false, user.id], function (err, results, fields) {
             if (err) return reject(err)
             return resolve(user)
           })
          } else if (user.emailVerified) {
-          console.log('email validate')
           usersCollection.query('UPDATE users SET emailToken = ?, emailVerified = ? WHERE id = ?', [null, user.emailVerified, user.id], function (err, results, fields) {
             if (err) return reject(err)
             return resolve(user)
@@ -302,7 +300,12 @@ module.exports = () => {
           usersCollection.query('SELECT * FROM users WHERE email= ?',[form.email], function(err, results, fields) {
             if (err) return reject(err)
             if (results.length !== 0) {
-              if (results[0].password == form.password) {
+              //there are user then validate password
+              let shasum = crypto.createHash('sha256')
+              shasum.update(form.password)
+              let password = shasum.digest('hex')
+              // verificamos password
+              if (results[0].password == password) {
                 let user = {}
                 user.id = results[0].id
                 user.name = results[0].username

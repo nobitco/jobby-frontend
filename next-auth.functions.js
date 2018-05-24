@@ -176,6 +176,7 @@ module.exports = () => {
           user.createdAt = timeNow
           user.updatedAt = timeNow
           user.emailVerified = false
+          user.passwordVerified = false
           user.username = user.email
           user.password = '12345'
           console.log(user)

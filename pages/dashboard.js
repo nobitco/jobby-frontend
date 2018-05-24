@@ -43,7 +43,7 @@ export default class Dashboard extends Page{
     this.userAgent =  typeof navigator != 'undefined' && navigator.userAgent; 
     this.state = {
       context: 'empresas',  //entregas, practicantes, tutores, empresas
-      showChangePasswordModal: props.session.user.passwordVerified == undefined ? true : false
+      showChangePasswordModal: props.session.user.passwordVerified == false ? true : false
     }
   }
 

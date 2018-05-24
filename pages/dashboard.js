@@ -13,6 +13,9 @@ import Modalbox  from '../components/modalbox'
 import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import CreateForm from '../components/modal-forms/create-profile'
 
 export default class Dashboard extends Page{
   
@@ -47,12 +50,17 @@ export default class Dashboard extends Page{
       context: 'practicantes',  //entregas, practicantes, tutores, empresas
       checkedItems: [],
       showDialog: false,
+      showModal: false,
     }
   }
   
-  showDialog = () => this.setState({ showDialog : true })
+  showDialog = (e) => this.setState({ showDialog : true })
   
-  closeDialog = () => this.setState({ showDialog : false });
+  closeDialog = (e) => this.setState({ showDialog : false });
+  
+  showModal = (e) => this.setState({ showModal : true })
+  
+  closeModal = (e) => this.setState({ showModal : false });
   
   clearSelections = () =>{
     this.setState({ checkedItems: [] })  
@@ -94,6 +102,7 @@ export default class Dashboard extends Page{
   
   getCheckedItems = (array) => this.setState({ checkedItems: array })
   
+  
   render(){
   
     const nextAssignments = this.props.nextAssignments;
@@ -101,15 +110,19 @@ export default class Dashboard extends Page{
     const students = this.props.students;
     const places = this.props.places;
     const tutors = this.props.tutors;
-    const actions = [
-      
-    ]
+    const actions = []
+  
     return(
       <Layout title='Dashboard' userAgent={this.userAgent}>
          <Header context={'dashboard'}/>
          <div className='row hide-on-small-only' style={{marginBottom: 40}}></div>
          <BlockWrapper>
-         
+           { this.state.showModal && <Modalbox open={this.state.showModal} 
+                                               onCloseRequest={this.closeModal} 
+                                               width={450} 
+                                               title={'Crear Perfil'}>
+                                         <CreateForm onCloseRequest={this.closeModal}/>
+                                      </Modalbox> }
            <SideBar context={this.state.context} getState={this.setContextState}/>
            <ContentPanel>
          
@@ -119,6 +132,9 @@ export default class Dashboard extends Page{
             { this.state.context === 'tutores' && this.getTutorsCards(tutors) }
            </ContentPanel>
            <Actionbar content={this.state.checkedItems} open={this.state.checkedItems.length > 0 ? true : false} onUndo={this.clearSelections} context={this.state.context}/>
+          <FloatingActionButton style={{marginRight:10}} secondary={true} onClick={this.showModal}>
+            <AddIcon />
+          </FloatingActionButton>
          </BlockWrapper>
       </Layout>
     )

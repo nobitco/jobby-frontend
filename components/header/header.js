@@ -17,8 +17,8 @@ export default class Header extends React.Component{
       zIndex:1000,
     }
     return(
-          <header className='row' style={{marginBottom: 0}}>
-          <Paper style={wrapperStyle} zDepth={3}>
+          <header className='row'>
+          <Paper style={wrapperStyle} zDepth={1}>
            <nav className='col s12 m12 l10 pull-l1' style={wrapperStyle}>
             <AppLogo />
             <NavigationBar context={this.props.context} />
@@ -28,7 +28,8 @@ export default class Header extends React.Component{
               header.row{
                 width:100%;
                 margin:0;
-z-index:10;
+                z-index:10;
+                margin-bottom:6px
               }
               nav{
               display:flex;

@@ -8,19 +8,22 @@ import RaisedButton from 'material-ui/RaisedButton'
 import FlatButton from 'material-ui/FlatButton';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import ClearIcon from 'material-ui/svg-icons/content/clear';
+
+
 export default class Actionbar extends React.Component{
   constructor(props){
     super(props)
   }
   makeChips = (array) => {
     return array.map((item, index) => {
-        return (<Chip  key={index}
-                       style={{margin: '10px 0'}}
-               
-                       backgroundColor={blueGreyLigthen5} >
-                  <Avatar src={item.avatar} />
-                  {item.username}
-                </Chip>)
+        return (<div>
+                  <Chip  key={index}
+                         style={{margin: '10px 0'}}
+                         backgroundColor={blueGreyLigthen5} >
+                            <Avatar src={item.avatar} />
+                            {item.username}
+                  </Chip>
+                </div>)
     })
   }
   handleUndo = (e) =>{

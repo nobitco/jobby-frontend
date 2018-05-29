@@ -119,9 +119,17 @@ class ChangePasswordModal extends React.Component {
     this.handleClose = this.handleClose.bind()
   }
 
-  handleClose = (event) => {
+  handleClose = async (event) => {
     event.preventDefault()
-    
+    const user = await fetch('http://localhost:3001/api/user', {
+      method:  'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        password: '123456'
+      })
+    })
     this.setState({ open: false })
   }
   

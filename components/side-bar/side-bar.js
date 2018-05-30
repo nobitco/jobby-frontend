@@ -6,20 +6,16 @@ import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import Paper from 'material-ui/Paper'
 import {violet} from '../../theme/theme-colors'
-import EntregaIcon from 'material-ui/svg-icons/action/description';
-import PracticantesIcon from 'material-ui/svg-icons/social/people';
-import TutoresIcon  from 'material-ui/svg-icons/social/school';
-import EmpresasIcon  from 'material-ui/svg-icons/social/location-city';
-import FontIcon from 'material-ui/FontIcon';
+
 export default class SideBar extends React.Component{
     constructor(props){
       super(props)
     }
 
-    getValue = (event,value) => this.props.getState(value)
+    getValue = (event,value) => this.props.getState(value, event)
     
     
-    isSelected = (value, context) => value === context ? { fontSize: '.9em', fontWeight: 'bold', paddingLeft: 60, color: violet } : { fontSize: '.8em', paddingLeft: 60 }
+    isSelected = (value, context) => value === context ? { transition: 'color 1s, backgroundColor 2s', width: '100%', fontSize: '.9em', fontWeight: '600', paddingLeft: 60, backgroundColor: violet, color: 'white'} : { width:'100%', fontSize: '.8em', paddingLeft: 60 }
     
     getMenuItems = (array, context) => array.map((item, index) => <MenuItem  leftIcon={item.leftIcon(item.value, context)} 
                                                                          value={item.value}
@@ -28,26 +24,17 @@ export default class SideBar extends React.Component{
                                                                          innerDivStyle={this.isSelected(item.value,context)}/>) 
     render(){
         const context = this.props.context
-        
-        const menuItems = [ { label: 'Entregas',
-                              value: 'entregas',
-                              leftIcon: function(value, context){ return <EntregaIcon color={this.value === context && violet }/> },
-                            },
-                           { label: 'Practicantes',
-                             value: 'practicantes',
-                             leftIcon: function(value, context){ return <PracticantesIcon color={this.value === context && violet}/> },
-                            },
-                           { label: 'Tutores',
-                             value: 'tutores',
-                             leftIcon: function(value, context){ return <TutoresIcon color={this.value === context && violet}/> },
-                            },
-                           { label: 'Empresas',
-                             value: 'empresas',
-                             leftIcon: function(value, context){ return <EmpresasIcon color={this.value === context && violet}/> },
-                            } ];
+        const fixedStyle = {
+          position: 'fixed',
+          top:0,
+          left:0,
+          marginTop: 100,
+          zIndex:10,
+        } 
+        const menuItems = this.props.menuItems
         return(
         
-         <section id='side-bar' className='col s12 m3 l2 push-l1 z-depth-1 ' > 
+         <section id='side-bar' className={this.props.className} style={fixedStyle}> 
          
            <SideBarHeader />
            <div className='row'>
@@ -64,7 +51,7 @@ export default class SideBar extends React.Component{
             <div className='col s12 hide-on-small-only'>
                <Menu autoWidth={true} 
                      onChange={this.getValue}
-                     style={{marginTop: 24, paddingLeft: '7%'}}>
+                     style={{marginTop: 15}}>
                 {
                    this.getMenuItems(menuItems, context)
                 }

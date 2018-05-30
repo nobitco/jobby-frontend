@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/nobitco/jobby-frontend#readme",
   "dependencies": {
+    "component-tween": "^1.2.0",
     "create-react-class": "^15.6.3",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.20.0",
@@ -31,6 +32,11 @@
     "react-dom": "^16.3.1",
     "react-swipeable-views": "^0.12.13",
     "react-tap-event-plugin": "^3.0.2",
-    "sass-loader": "^6.0.7"
+    "react-to-target-auto-scroll": "^1.0.4",
+    "react-waypoint": "^8.0.1",
+    "sass-loader": "^6.0.7",
+    "scroll-to": "0.0.2",
+    "scroll-to-element": "^2.0.0",
+    "scrollto-element": "^1.0.4"
   }
 }

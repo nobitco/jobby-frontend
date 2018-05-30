@@ -16,16 +16,14 @@ export default class Actionbar extends React.Component{
   }
   makeChips = (array) => {
     return array.map((item, index) => {
-        return (<div>
-                  <Chip  key={index}
-                         style={{margin: '10px 0'}}
-                         backgroundColor={blueGreyLigthen5} >
-                            <Avatar src={item.avatar} />
-                            {item.username}
-                  </Chip>
-                </div>)
-    })
+        return ( <Chip  key={index}
+                        style={{margin: '10px 0'}}
+                        backgroundColor={blueGreyLigthen5} >
+                           <Avatar src={item.avatar} />
+                           {item.username} 
+                  </Chip>)})
   }
+  
   handleUndo = (e) =>{
     e.preventDefault();
     this.props.onUndo(e)

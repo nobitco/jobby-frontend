@@ -15,26 +15,30 @@ export default class Header extends React.Component{
       flexContent: 'center',
       alignItems: 'center',
       zIndex:1000,
+      padding:'0 15px'
+    }
+    const headerStyle = {
+                position: 'fixed',
+                top:0,
+                left:0,
+                width:'100%',
+                margin:0,
+                zIndex:10,
+                marginBottom:6,
     }
     return(
-          <header className='row'>
+          <header className='row' style={headerStyle}>
           <Paper style={wrapperStyle} zDepth={1}>
-           <nav className='col s12 m12 l10 pull-l1' style={wrapperStyle}>
+           <nav className='col s12 m12 l12' style={wrapperStyle}>
             <AppLogo />
             <NavigationBar context={this.props.context} />
             <UserMenuBar />
            </nav>
             <style jsx>{`
-              header.row{
-                width:100%;
-                margin:0;
-                z-index:10;
-                margin-bottom:6px
-              }
+             
               nav{
               display:flex;
               justify-content:space-between;
-              padding: 0 1.14rem;
               }
             `}
             </style>

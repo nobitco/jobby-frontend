@@ -9,6 +9,8 @@ import SettingsIcon from 'material-ui/svg-icons/action/settings'
 import Modalbox from '../modalbox'
 import Checkbox from 'material-ui/Checkbox'
 import LookIcon from 'material-ui/svg-icons/action/visibility'
+import IconButton from 'material-ui/IconButton';
+import {violet} from '../../theme/theme-colors'
 
 export default class InfoCard extends React.Component{
   
@@ -84,10 +86,11 @@ export default class InfoCard extends React.Component{
                                                       left: 0}} />}
                                             primaryText={item.username}
                                             secondaryText={item.activity}
-                                            rightIconButton={<RaisedButton label='Ver' 
-                                                                           primary={true} 
-                                                                           style={{margin: 10}} 
-                                                                           icon={<LookIcon />}/> }
+                                            rightIconButton={<IconButton style={{marginRight:14}}
+                                                                         iconStyle={{color: '#B3B3B4'}}>
+                                                               <LookIcon hoverColor={violet}/>
+                                                             </IconButton>
+                                                            }
                                             key={index} 
                                             leftCheckbox={<Checkbox onClick={ () => this.onListItemChecked(item) } 
                                                                     checked={this.isChecked(item)}/> }  /> })  //iterates nListItem times 
@@ -106,10 +109,10 @@ export default class InfoCard extends React.Component{
                                                                                       left: 0}} />}
                                                                              primaryText={item.username}
                                                                              secondaryText={item.activity}
-                                                                             rightIconButton={<RaisedButton label='Ver' 
-                                                                                                            primary={true} 
-                                                                                                            style={{margin: 10}}
-                                                                                                            icon={<LookIcon />} />}
+                                                                             rightIconButton={<IconButton style={{marginRight:14}}
+                                                                                                          iconStyle={{color: '#B3B3B4'}}>
+                                                                                                <LookIcon hoverColor={violet}/>
+                                                                                              </IconButton>}
                                                                              key={index}
                                                                              leftCheckbox={<Checkbox onClick={ () => this.onListItemChecked(item) } 
                                                                                                      checked={this.isChecked(item)}/> } /> )) }
@@ -132,13 +135,17 @@ export default class InfoCard extends React.Component{
     const items = this.props.items;
     const settingsBtnStyle = {
       position:'absolute',
-      top: 0,
-      right: 0
+      top: -8,
+      right: 14,
+     
+    }
+    const btnIconHoverStyle  = {
+      color: 'black',
     }
     const lists = !this.props.keyFilter ? this.props.items : this.categorizeItems() 
     
     return(
-      <article>
+      <article id={this.props.id}>
        { <Modalbox open={this.state.showModal} onCloseRequest={this.closeModal}>{this.modalContent}
            <form>
              <label htmlFor='input'>Hola</label>
@@ -147,11 +154,8 @@ export default class InfoCard extends React.Component{
          </Modalbox>  }
         <div className='card-header'>
            <h5 className='card-title '>{this.props.title}</h5>
-           <RaisedButton className='settings-btn'
-                         label='Configurar'
-                         icon={ <SettingsIcon />}
-                         style={settingsBtnStyle}
-                         onClick={this.getModal} />
+          <IconButton onClick={this.getModal} style={settingsBtnStyle}  iconStyle={{color: '#B3B3B4'}} ><SettingsIcon hoverColor={violet} /></IconButton>
+          
         </div>
         <Card>
           <Tabs onChange={this.handleChange}
@@ -159,7 +163,8 @@ export default class InfoCard extends React.Component{
            { this.props.keyFilter && this.createCardTabs() }
           </Tabs>
           <SwipeableViews index={this.state.slideIndex}
-                           onChangeIndex={this.handleChange}>
+                           onChangeIndex={this.handleChange}
+                           style={{ height: '78vh', overflowY: 'scroll'}}>
             
             {this.createListComponents(lists)}
       

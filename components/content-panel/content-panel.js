@@ -17,7 +17,7 @@ export default class ContentPanel extends React.Component{
   autoscrollTo = (target) => {
     var scrollToElement = require('scroll-to-element') 
     scrollToElement( target,{ 
-                      offset: -120,
+                      offset: this.props.onSmall ? -190 : -120,
                       duration: autoscrollDuration
                     })
     //avoids autoscrolling and waypoint events conflict
@@ -31,6 +31,7 @@ export default class ContentPanel extends React.Component{
       this.autoscrollTo(target)
     }   
   }
+  
   static getDerivedStateFromProps(props, state){
     return { context: props.context }
   }
@@ -64,7 +65,7 @@ export default class ContentPanel extends React.Component{
                                                          <Waypoint onEnter={this.waypointHandler.bind(this, item.props.id)}
                                                                    topOffset='1000px'
                                                                    bottomOffset='200px'>
-                                                              <div style={{borderTop: '1px solid green'}}>{item}</div>
+                                                              <div>{item}</div>
                                                           </Waypoint>
                                                         </div> )}
                 </div>)}

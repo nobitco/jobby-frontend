@@ -5,7 +5,7 @@ import React from 'react'
 export default function BlockWrapper(props){
   const style = {
   position: 'relative', 
-  marginTop: 80
+  marginTop: 65
   }
 
   return(

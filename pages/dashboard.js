@@ -28,12 +28,12 @@ export default class Dashboard extends Page{
   
   static async getInitialProps ({req, query}) {
     let props = await super.getInitialProps({req, query})
-
-    const nextAssignments = await fetch('http://localhost:3001/api/next-assignments')
-    const deadAssignments =  await fetch('http://localhost:3001/api/expired-assignments')
-    const students =  await fetch('http://localhost:3001/api/students')
-    const places =  await fetch('http://localhost:3001/api/places')
-    const tutors =  await fetch('http://localhost:3001/api/tutors')
+    let apiUrl = 'https://powerful-mountain-15092.herokuapp.com'
+    const nextAssignments = await fetch(apiUrl+'/api/next-assignments')
+    const deadAssignments =  await fetch(apiUrl+'/api/expired-assignments')
+    const students =  await fetch(apiUrl+'/api/students')
+    const places =  await fetch(apiUrl+'/api/places')
+    const tutors =  await fetch(apiUrl+'/api/tutors')
     const nextAssignmentsJson = await nextAssignments.json()
     const deadAssignmentsJson = await deadAssignments.json()
     const studentsJson = await students.json()

@@ -27,7 +27,8 @@ export default class Jobs extends Page{
   
   static async getInitialProps ({req, query}) {
     let props = await super.getInitialProps({req, query})
-    const places = await fetch('http://localhost:3001/api/places')
+    let apiUrl = 'https://powerful-mountain-15092.herokuapp.com'
+    const places = await fetch(apiUrl+'/api/places')
     const placesJson = await places.json()
     
     props.places = placesJson
